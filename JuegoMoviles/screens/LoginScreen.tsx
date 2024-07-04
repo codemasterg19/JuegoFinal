@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View,ImageBackground } from 'react-native';
 
 export default function LoginScreen({ navigation }: any) {
  
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}></Text>
+    
+    <ImageBackground source={require('../assets/bg.png')} style={styles.container}>
+
+        <Image
+        source={require('../assets/icono.png')}
+        resizeMode={'contain'}
+        style={styles.icon}
+        />
+
+      <Text style={styles.titulo}>INGRESO GAMER</Text>
       <TextInput
         style={styles.containerimput}
         placeholder="Usuario"
+        autoCorrect={false}
+        
       />
       <TextInput
         style={styles.containerimput}
@@ -22,7 +32,7 @@ export default function LoginScreen({ navigation }: any) {
       <TouchableOpacity style={styles.Botones2} onPress={()=> navigation.navigate("Registrarse")}>
         <Text style={styles.Botonestexto}>Registrarse</Text>
       </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -33,18 +43,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  icon: { marginTop: -100, height: 50 },
   titulo: {
-    fontSize: 40,
-    color: '#181716',
-    marginBottom: 20,
+    color: 'rgba(255,255,255,.95)',
+    fontSize: 17,
+    marginBottom: 50,
+    marginTop: 50
   },
   containerimput: {
-    backgroundColor: 'white',
-    height: 50,
-    width: '80%',
-    borderRadius: 20,
-    margin: 10,
-    paddingHorizontal: 10,
+    
+    height: 60,
+    fontSize: 17,
+    marginBottom: 15,
+    width: 300,
+    textAlign: 'center',
+    color: '#333',
+    fontWeight: '400',
+    backgroundColor: 'rgba(255,255,255,.95)',
+    borderRadius: 40,
   },
   Botones: {
     backgroundColor: 'red',
@@ -56,7 +72,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   Botones2: {
-    backgroundColor: 'white',
     width: '70%',
     height: 70,
     borderRadius: 40,
@@ -65,7 +80,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   Botonestexto: {
-    color: 'black',
+    color: 'white',
     fontSize: 20,
   }
 });
