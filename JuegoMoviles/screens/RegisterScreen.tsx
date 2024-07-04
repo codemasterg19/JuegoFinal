@@ -7,7 +7,6 @@ export const RegisterScreen = ({ navigation }: any) => {
 
   const [firstName, onChangeFirstName] = React.useState('');
   const [lastName, onChangeLastName] = React.useState('');
-  const [number, onChangeNumber] = React.useState('');
   const [email, onChangeEmail] = React.useState('');
   const [user, onChangeUser] = React.useState('');
   const [password, onChangePassword] = React.useState('');
@@ -60,8 +59,8 @@ export const RegisterScreen = ({ navigation }: any) => {
           placeholder="******"
         />
         <View style={styles.containerB}>
-          <ButtonComponent title='REGISTRARSE' onPress={()=>navigation.navigate('RegisterScreen')}/>
-          <ButtonComponent title='INICIAR SESIÓN' onPress={()=>navigation.navigate('LoginScreen')}/>
+          <ButtonComponent title='REGISTRARSE' onPress={()=>navigation.navigate('Registrarse')}/>
+          <ButtonComponent title='INICIAR SESIÓN' onPress={()=>navigation.navigate('Login')}/>
         </View>
       </View>
     </ScrollView>
