@@ -16,10 +16,10 @@ export default function LoginScreen({ navigation }: any) {
         placeholder="Contraseña"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.btn} onPress={()=> navigation.navigate("")}>
+      <TouchableOpacity style={styles.btn} onPress={()=> navigation.navigate("Welcome")}>
         <Text style={styles.btnText}>Iniciar Sesión</Text>
       </TouchableOpacity>
-      <TouchableOpacity  onPress={()=> navigation.navigate("")}>
+      <TouchableOpacity  onPress={()=> navigation.navigate("Registrarse")}>
         <Text style={styles.btnText}>Registrarse</Text>
       </TouchableOpacity>
     </View>
