@@ -16,7 +16,7 @@ export default function LoginScreen({ navigation }: any) {
         placeholder="Contraseña"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.Botones} onPress={()=> navigation.navigate("Welcome")}>
+      <TouchableOpacity style={styles.Botones} onPress={()=> navigation.navigate("BottomTab")}>
         <Text style={styles.Botonestexto}>Iniciar Sesión</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.Botones2} onPress={()=> navigation.navigate("Registrarse")}>
