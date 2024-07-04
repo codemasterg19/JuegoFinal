@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Card from "../components/Card";
 
 
-// Define the type for the cards array
+
 const cards: string[] = [
   // "🥹",
   // "🗣️",
@@ -23,12 +23,12 @@ const cards: string[] = [
   // "🥵",
 ];
 
-// Define the type for the shuffle function
+
 function shuffle(array: string[]): string[] {
   for (let i = array.length - 1; i > 0; i--) {
     const randomIndex = Math.floor(Math.random() * (i + 1));
 
-    // Swap the elements at i and randomIndex
+   
     [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
   }
   return array;
