@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View,ImageBackground } from 'react-native';
+import { ButtonComponent } from '../components/ButtonComponent';
 
 export default function LoginScreen({ navigation }: any) {
  
@@ -26,11 +27,12 @@ export default function LoginScreen({ navigation }: any) {
         placeholder="Contraseña"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.Botones} onPress={()=> navigation.navigate("BottomTab")}>
-        <Text style={styles.Botonestexto}>Iniciar Sesión</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.Botones2} onPress={()=> navigation.navigate("Registrarse")}>
-        <Text style={styles.Botonestexto2}>Registrarse</Text>
+      <View style={styles.containerB}>
+        <ButtonComponent title='INICIAR SESIÓN' onPress={()=>navigation.navigate('BottomTab')}/>
+        <ButtonComponent title='REGISTRARSE' onPress={()=>navigation.navigate('Registrarse')}/>
+      </View>
+      <TouchableOpacity style={styles.Botones2} onPress={()=> navigation.navigate("Recuperar")}>
+        <Text style={styles.Botonestexto2}>Recuperar contraseña</Text>
       </TouchableOpacity>
     </ImageBackground>
   );
@@ -42,6 +44,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#587e63',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  containerB:{
+    flexDirection:'row',
+    marginTop:20,
+    gap:20,
   },
   icon: { marginTop: -100, height: 150 },
   titulo: {
@@ -61,6 +68,9 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     backgroundColor: 'rgba(255,255,255,.95)',
     borderRadius: 40,
+  },
+  button:{
+    backgroundColor:''
   },
   Botones: {
     backgroundColor: '#3e69e0',
@@ -84,7 +94,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   Botonestexto2: {
-    color: '#2eea67',
+    color: 'white',
     fontSize: 20,
   }
 });
