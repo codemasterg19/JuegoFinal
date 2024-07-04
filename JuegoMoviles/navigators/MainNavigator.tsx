@@ -29,7 +29,7 @@ const Stack = createStackNavigator();
 
 function MyStack() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator >
             <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
             <Stack.Screen name="Registrarse" component={RegisterScreen} />
             <Stack.Screen name="Recuperar" component={PasswordScreen} />
