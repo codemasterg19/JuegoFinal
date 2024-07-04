@@ -18,7 +18,7 @@ export default function LoginScreen({ navigation }: any) {
       <TextInput
         style={styles.containerimput}
         placeholder="Usuario"
-        autoCorrect={false}
+        autoCorrect={false} 
         
       />
       <TextInput
