@@ -6,21 +6,21 @@ export default function LoginScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}></Text>
+      <Text style={styles.titulo}></Text>
       <TextInput
-        style={styles.input}
+        style={styles.containerimput}
         placeholder="Usuario"
       />
       <TextInput
-        style={styles.input}
+        style={styles.containerimput}
         placeholder="Contraseña"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.btn} onPress={()=> navigation.navigate("")}>
-        <Text style={styles.btnText}>Iniciar Sesión</Text>
+      <TouchableOpacity style={styles.Botones} onPress={()=> navigation.navigate("WelcomeScreen")}>
+        <Text style={styles.Botonestexto}>Iniciar Sesión</Text>
       </TouchableOpacity>
-      <TouchableOpacity  onPress={()=> navigation.navigate("")}>
-        <Text style={styles.btnText}>Registrarse</Text>
+      <TouchableOpacity style={styles.Botones2} onPress={()=> navigation.navigate("")}>
+        <Text style={styles.Botonestexto}>Registrarse</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,12 +33,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
+  titulo: {
     fontSize: 40,
     color: '#181716',
     marginBottom: 20,
   },
-  input: {
+  containerimput: {
     backgroundColor: 'white',
     height: 50,
     width: '80%',
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     margin: 10,
     paddingHorizontal: 10,
   },
-  btn: {
-    backgroundColor: '#41904a',
+  Botones: {
+    backgroundColor: 'red',
     width: '70%',
     height: 70,
     borderRadius: 40,
@@ -55,8 +55,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
   },
-  btnText: {
-    color: 'white',
+  Botones2: {
+    backgroundColor: 'white',
+    width: '70%',
+    height: 70,
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  Botonestexto: {
+    color: 'black',
     fontSize: 20,
   }
 });

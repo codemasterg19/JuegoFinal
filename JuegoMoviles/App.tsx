@@ -8,6 +8,7 @@ export default function App() {
       <Text>JUEGO MEMORIA</Text>
       <StatusBar style="auto" />
     </View>
+    
   );
 }
 
