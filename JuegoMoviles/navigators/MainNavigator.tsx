@@ -2,8 +2,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "../screens/LoginScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import RegistroScreens from "../screens/RegistroScreens";
 import JuegoMemoria from "../screens/JuegoMemoria";
+import { RegisterScreen } from "../screens/RegisterScreen";
   
 
 
@@ -16,7 +16,7 @@ import JuegoMemoria from "../screens/JuegoMemoria";
     return(
         <Stack.Navigator>
             <Stack.Screen name="Login" component={LoginScreen}/>
-            <Stack.Screen name="Registrarse" component={RegistroScreens}/>
+            <Stack.Screen name="Registrarse" component={RegisterScreen}/>
             <Stack.Screen name="Welcome" component={WelcomeScreen}/>
             <Stack.Screen name="Juego" component={JuegoMemoria}/>
         </Stack.Navigator>
