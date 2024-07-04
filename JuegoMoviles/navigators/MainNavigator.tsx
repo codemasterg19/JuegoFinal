@@ -5,9 +5,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import LoginScreen from "../screens/LoginScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import RegistroScreens from "../screens/RegistroScreens";
+
 import JuegoMemoria from "../screens/JuegoMemoria";
 import ScoreScreen from "../screens/ScoreScreen";
+import { RegisterScreen } from '../screens/RegisterScreen';
 
 // Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
@@ -29,7 +30,7 @@ function MyStack() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
-            <Stack.Screen name="Registrarse" component={RegistroScreens} />
+            <Stack.Screen name="Registrarse" component={RegisterScreen} />
             <Stack.Screen name="BottomTab" component={MyTabs} />
         </Stack.Navigator>
     );
@@ -43,5 +44,3 @@ export default function Navegador() {
         </NavigationContainer>
     );
 }
-
-
