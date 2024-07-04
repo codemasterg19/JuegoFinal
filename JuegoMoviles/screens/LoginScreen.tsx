@@ -58,6 +58,5 @@ const styles = StyleSheet.create({
   btnText: {
     color: 'white',
     fontSize: 20,
-  },
-  // ...resto de tus estilos
+  }
 });
