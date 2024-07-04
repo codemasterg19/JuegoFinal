@@ -31,15 +31,7 @@ export const RegisterScreen = ({ navigation }: any) => {
           value={lastName}
           placeholder="Torres"
         />
-        <Text style={styles.texto}>Celular:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeNumber}
-          value={number}
-          placeholder="0987654321"
-          keyboardType="numeric"
-        />
-        <Text style={styles.texto}>Email:</Text>
+        <Text style={styles.texto}>Correo:</Text>
         <TextInput
           style={styles.input}
           onChangeText={onChangeEmail}
