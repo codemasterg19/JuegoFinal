@@ -5,6 +5,9 @@ export default function WelcomeScreen() {
   return (
     <View>
       <Text>WelcomeScreen</Text>
+      <Text>WelcomeScreen</Text>
+      <Text>WelcomeScreen</Text>
+      <Text>WelcomeScreen</Text>
     </View>
   )
 }
