@@ -15,7 +15,7 @@ import JuegoMemoria from "../screens/JuegoMemoria";
   function MyStack(){
     return(
         <Stack.Navigator>
-            <Stack.Screen name="Login" component={LoginScreen}/>
+            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown:false}}/>
             <Stack.Screen name="Registrarse" component={RegistroScreens}/>
             <Stack.Screen name="Welcome" component={WelcomeScreen}/>
             <Stack.Screen name="Juego" component={JuegoMemoria}/>
