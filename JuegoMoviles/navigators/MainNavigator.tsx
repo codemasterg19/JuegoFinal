@@ -18,7 +18,7 @@ function MyTabs() {
     return (
         <Tab.Navigator initialRouteName='Welcome' screenOptions={{ headerShown: false }}>
             <Tab.Screen name="Welcome" component={WelcomeScreen} />
-            <Tab.Screen name="Juego" component={JuegoMemoria} />
+            <Tab.Screen name="Juego" component={JuegoMemoria}  />
             <Tab.Screen name="Score" component={ScoreScreen} />
         </Tab.Navigator>
     );
@@ -33,7 +33,7 @@ function MyStack() {
             <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
             <Stack.Screen name="Registrarse" component={RegisterScreen} />
             <Stack.Screen name="Recuperar" component={PasswordScreen} />
-            <Stack.Screen name="BottomTab" component={MyTabs} />
+            <Stack.Screen name="BottomTab" component={MyTabs} options={{headerShown:false}}/>
         </Stack.Navigator>
     );
 }

@@ -60,8 +60,8 @@ export const RegisterScreen = ({ navigation }: any) => {
           placeholder="******"
         />
         <View style={styles.containerB}>
-          <ButtonComponent title='REGISTRARSE' onPress={()=>navigation.navigate('RegisterScreen')}/>
-          <ButtonComponent title='INICIAR SESIÓN' onPress={()=>navigation.navigate('LoginScreen')}/>
+          <ButtonComponent title='REGISTRARSE' onPress={()=>navigation.navigate('')}/>
+          <ButtonComponent title='INICIAR SESIÓN' onPress={()=>navigation.navigate('Login')}/>
         </View>
       </View>
     </ScrollView>
