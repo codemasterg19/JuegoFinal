@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import {  Alert,  Image,  ScrollView,  StyleSheet,  Text,  TextInput,  TouchableOpacity,  View,} from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity } from "react-native";
 import { ButtonComponent } from "../components/ButtonComponent";
 import { PRIMARY_COLOR, TEXT_COLOR } from "../commons/constantsColor";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/Config";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-import { doc, setDoc } from 'firebase/firestore';
-
-export const RegisterScreen = ({ navigation }: any) => {
+export default function RegisterScreen({ navigation }: any) {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [correo, setCorreo] = useState("");
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
   const [confirma, setConfirma] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   function getErrorMessage(errorCode: any) {
     switch (errorCode) {
@@ -43,7 +45,6 @@ export const RegisterScreen = ({ navigation }: any) => {
     }
     createUserWithEmailAndPassword(auth, correo, password)
       .then((userCredential) => {
-        // Registro exitoso
         const user = userCredential.user;
         console.log("Usuario registrado:", user.email);
         Alert.alert(
@@ -52,7 +53,6 @@ export const RegisterScreen = ({ navigation }: any) => {
           [{ text: "OK", onPress: () => navigation.navigate("Login") }]
         );
       })
-
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = getErrorMessage(errorCode);
@@ -62,29 +62,29 @@ export const RegisterScreen = ({ navigation }: any) => {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.container1}>
-        <Text style={styles.textStart}>DATOS DE REGISTRO</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.title}>REGISTRARSE</Text>
 
         <TextInput
           style={styles.input}
           onChangeText={setNombre}
           value={nombre}
-          placeholder="Ingrese Nombre"
+          placeholder="Nombre"
         />
 
         <TextInput
           style={styles.input}
           onChangeText={setApellido}
           value={apellido}
-          placeholder="Ingrese Apellido"
+          placeholder="Apellido"
         />
 
         <TextInput
           style={styles.input}
           onChangeText={setUsuario}
           value={usuario}
-          placeholder="Ingrese Usuario"
+          placeholder="Usuario"
         />
 
         <TextInput
@@ -96,75 +96,109 @@ export const RegisterScreen = ({ navigation }: any) => {
           autoCorrect={false}
         />
 
-        <TextInput
-          placeholder="Contraseña"
-          style={styles.input}
-          onChangeText={(texto) => setPassword(texto)}
-          secureTextEntry
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            placeholder="Contraseña"
+            style={styles.passwordInput}
+            onChangeText={(texto) => setPassword(texto)}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TouchableOpacity
+            style={styles.passwordVisibilityToggle}
+            onPress={() => setShowPassword(!showPassword)}
+          >
+            <FontAwesomeIcon
+              icon={showPassword ? faEye : faEyeSlash} // Icono de ojo abierto o cerrado según el estado de showPassword
+              size={20} // Tamaño del ícono
+              color={TEXT_COLOR} // Color del ícono
+            />
+          </TouchableOpacity>
+        </View>
 
-        <TextInput
-          placeholder="Confirmar Contraseña"
-          style={styles.input}
-          onChangeText={(texto) => setConfirma(texto)}
-          secureTextEntry
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <View style={styles.containerB}>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            placeholder="Confirmar Contraseña"
+            style={styles.passwordInput}
+            onChangeText={(texto) => setConfirma(texto)}
+            secureTextEntry={!showConfirmPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TouchableOpacity
+            style={styles.passwordVisibilityToggle}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <FontAwesomeIcon
+              icon={showConfirmPassword ? faEye : faEyeSlash} // Icono de ojo abierto o cerrado según el estado de showConfirmPassword
+              size={20} // Tamaño del ícono
+              color={TEXT_COLOR} // Color del ícono
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
           <ButtonComponent title="Registrarse" onPress={registro} />
           <ButtonComponent
-            title="INICIAR SESIÓN"
+            title="Regresar"
             onPress={() => navigation.navigate("Login")}
           />
         </View>
       </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: PRIMARY_COLOR,
-  },
-  container1: {
+    flexGrow: 1,
     backgroundColor: PRIMARY_COLOR,
     alignItems: "center",
-    width: "100%",
-    marginVertical: 20,
-    // gap:10,
+    justifyContent: "center",
   },
-  containerB: {
-    marginTop: 10,
-    gap: 20,
+  formContainer: {
+    width: "80%",
+    alignItems: "center",
   },
-  logo: {
-    height: 100,
-    width: 300,
-    resizeMode: "contain",
-  },
-  textStart: {
+  title: {
     color: TEXT_COLOR,
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  texto: {
-    color: TEXT_COLOR,
-    fontWeight: "bold",
-    textAlign: "center",
+    marginBottom: 20,
   },
   input: {
     backgroundColor: "white",
     color: "black",
-    width: 200,
+    width: "100%",
     height: 40,
     marginVertical: 10,
     borderWidth: 1,
     padding: 10,
+  },
+  passwordContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  passwordInput: {
+    backgroundColor: "white",
+    color: "black",
+    width: "85%",
+    height: 40,
+    borderWidth: 1,
+    padding: 10,
+  },
+  passwordVisibilityToggle: {
+    width: "15%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    flexDirection:'row',
+    marginTop:20,
+    gap:20,
   },
 });
