@@ -5,10 +5,7 @@ import { getStorage} from "firebase/storage";
 import { getAuth,} from "firebase/auth";
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDOciLIXljsEPbLysGSAxjaFA72Q6CMQEI",
   authDomain: "juegomoviles-a6162.firebaseapp.com",
