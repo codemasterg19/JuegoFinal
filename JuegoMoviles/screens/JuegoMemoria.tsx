@@ -1,26 +1,33 @@
 import * as React from "react";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Card from "../components/Card";
 
 
+// Obtener las dimensiones de la pantalla
+const { width } = Dimensions.get('window');
+
+// Definir el número de columnas y calcular el tamaño de las cartas
+const numColumns = 4;
+const cardMargin = 10; // Margen entre las cartas
+const cardSize = (width - cardMargin * (numColumns + 1)) / numColumns;
 
 const cards: string[] = [
   // "🥹",
   // "🗣️",
   // "🦷",
   // "🍑",
-  // "🌪️",
-  // "🌎",
+  "🌪️",
+  "🌎",
   "👻",
   "🎃",
   "👾",
   "🤖",
   "🦞",
   "🐈",
-  // "👻",
-  // "🥶",
-  // "🥵",
+
+ // "🥶",
+ // "🥵",
 ];
 
 
@@ -63,7 +70,7 @@ const App: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>
-        {didPlayerWin() ? "Ganaste!! 🎉" : "Memory"}
+        {didPlayerWin() ? "Ganaste!! 🎉" : "Memoria"}
       </Text>
       <Text style={styles.title}>Score: {score}</Text>
       <View style={styles.board}>
@@ -75,8 +82,9 @@ const App: React.FC = () => {
               key={index}
               isTurnedOver={isTurnedOver}
               onPress={() => handleTapCard(index)}
+              size={cardSize}
             >
-              {card}
+              {card}s
             </Card>
           );
         })}

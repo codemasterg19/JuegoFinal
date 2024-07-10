@@ -1,16 +1,20 @@
 import * as React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
+
+
+
 interface CardProps {
   onPress: () => void;
   isTurnedOver: boolean;
   children: React.ReactNode;
+  size: number;
 }
 
-const Card: React.FC<CardProps> = ({ onPress, isTurnedOver, children }) => {
+const Card: React.FC<CardProps> = ({ onPress, isTurnedOver, children, size }) => {
   return (
     <Pressable
-      style={isTurnedOver ? styles.cardUp : styles.cardDown}
+    style={[isTurnedOver ? styles.cardUp : styles.cardDown, { width: size, height: size }]}
       onPress={onPress}
     >
       {isTurnedOver ? (
