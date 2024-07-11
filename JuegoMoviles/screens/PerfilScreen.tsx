@@ -12,15 +12,9 @@ export default function PerfilScreen({ navigation }: any) {
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Hola, administra tu cuenta</Text>
-          <IconComponent pathImage='https://cdn.icon-icons.com/icons2/1632/PNG/96/63007shoppingcart_109353.png'/>
+          <IconComponent pathImage='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdsU9PD6epuU1Eolx_ElhxRlZwjYKUiJNDzw&usqp=CAU'/>
         </View>
         <BodyComponent>
-          <View style={stylesI.containerIcon}>
-            <IconComponent pathImage='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdsU9PD6epuU1Eolx_ElhxRlZwjYKUiJNDzw&usqp=CAU'
-              onPress={()=>navigation.navigate('LoginScreen')}/>
-            <IconComponent pathImage='https://cdn.icon-icons.com/icons2/729/PNG/512/google_icon-icons.com_62736.png'/>
-            <IconComponent pathImage='https://cdn.icon-icons.com/icons2/2429/PNG/512/facebook_logo_icon_147291.png'/>
-          </View>
           <View style={stylesI.containerM}>
             <Text style={stylesI.text}>Cuenta</Text>
             <IconComponentSmall title='Historial de compras' 

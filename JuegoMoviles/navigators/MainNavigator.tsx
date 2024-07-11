@@ -13,6 +13,7 @@ import { PasswordScreen } from '../screens/PasswordScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import PerfilScreen from '../screens/PerfilScreen';
 import { SECONDARY_COLOR } from '../commons/constantsColor';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
@@ -20,10 +21,22 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
     return (
         <Tab.Navigator initialRouteName='Welcome' screenOptions={{tabBarActiveTintColor: SECONDARY_COLOR, tabBarStyle: {backgroundColor:'black'},headerShown:false}}>
-            <Tab.Screen name="Welcome" component={WelcomeScreen} />
-            <Tab.Screen name="Juego" component={JuegoMemoria}  />
-            <Tab.Screen name="Score" component={ScoreScreen} />
-            <Tab.Screen name="Perfil" component={PerfilScreen} />
+            <Tab.Screen name="Welcome" component={WelcomeScreen}
+            options={{tabBarIcon: ({ color, size }) => (
+                <Icon name="home" color={color} size={size} />
+              ),}}/>
+            <Tab.Screen name="Juego" component={JuegoMemoria}
+            options={{tabBarIcon: ({ color, size }) => (
+                <Icon name="account" color={color} size={size} />
+              ),}}/>
+            <Tab.Screen name="Score" component={ScoreScreen} 
+            options={{tabBarIcon: ({ color, size }) => (
+                <Icon name="account" color={color} size={size} />
+              ),}}/>
+            <Tab.Screen name="Perfil" component={PerfilScreen} 
+            options={{tabBarIcon: ({ color, size }) => (
+                <Icon name="account" color={color} size={size} />
+              ),}}/>
         </Tab.Navigator>
     );
 }
