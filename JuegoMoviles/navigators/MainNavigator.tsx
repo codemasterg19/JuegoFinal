@@ -11,16 +11,19 @@ import ScoreScreen from "../screens/ScoreScreen";
 
 import { PasswordScreen } from '../screens/PasswordScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import PerfilScreen from '../screens/PerfilScreen';
+import { SECONDARY_COLOR } from '../commons/constantsColor';
 
 // Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
     return (
-        <Tab.Navigator initialRouteName='Welcome' screenOptions={{ headerShown: false }}>
+        <Tab.Navigator initialRouteName='Welcome' screenOptions={{tabBarActiveTintColor: SECONDARY_COLOR, tabBarStyle: {backgroundColor:'black'},headerShown:false}}>
             <Tab.Screen name="Welcome" component={WelcomeScreen} />
             <Tab.Screen name="Juego" component={JuegoMemoria}  />
             <Tab.Screen name="Score" component={ScoreScreen} />
+            <Tab.Screen name="Perfil" component={PerfilScreen} />
         </Tab.Navigator>
     );
 }
