@@ -27,11 +27,11 @@ function MyTabs() {
               ),}}/>
             <Tab.Screen name="Juego" component={JuegoMemoria}
             options={{tabBarIcon: ({ color, size }) => (
-                <Icon name="account" color={color} size={size} />
+                <Icon name="controller-classic" color={color} size={size} />
               ),}}/>
             <Tab.Screen name="Score" component={ScoreScreen} 
             options={{tabBarIcon: ({ color, size }) => (
-                <Icon name="account" color={color} size={size} />
+                <Icon name="database" color={color} size={size} />
               ),}}/>
             <Tab.Screen name="Perfil" component={PerfilScreen} 
             options={{tabBarIcon: ({ color, size }) => (
