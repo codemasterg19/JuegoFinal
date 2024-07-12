@@ -8,18 +8,35 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 
 import JuegoMemoria from "../screens/JuegoMemoria";
 import ScoreScreen from "../screens/ScoreScreen";
-import { RegisterScreen } from '../screens/RegisterScreen';
+
 import { PasswordScreen } from '../screens/PasswordScreen';
+import RegisterScreen from '../screens/RegisterScreen';
+import PerfilScreen from '../screens/PerfilScreen';
+import { SECONDARY_COLOR } from '../commons/constantsColor';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
     return (
-        <Tab.Navigator initialRouteName='Welcome' screenOptions={{ headerShown: false }}>
-            <Tab.Screen name="Welcome" component={WelcomeScreen} />
-            <Tab.Screen name="Juego" component={JuegoMemoria} />
-            <Tab.Screen name="Score" component={ScoreScreen} />
+        <Tab.Navigator initialRouteName='Welcome' screenOptions={{tabBarActiveTintColor: SECONDARY_COLOR, tabBarStyle: {backgroundColor:'black'},headerShown:false}}>
+            <Tab.Screen name="Welcome" component={WelcomeScreen}
+            options={{tabBarIcon: ({ color, size }) => (
+                <Icon name="home" color={color} size={size} />
+              ),}}/>
+            <Tab.Screen name="Juego" component={JuegoMemoria}
+            options={{tabBarIcon: ({ color, size }) => (
+                <Icon name="controller-classic" color={color} size={size} />
+              ),}}/>
+            <Tab.Screen name="Score" component={ScoreScreen} 
+            options={{tabBarIcon: ({ color, size }) => (
+                <Icon name="database" color={color} size={size} />
+              ),}}/>
+            <Tab.Screen name="Perfil" component={PerfilScreen} 
+            options={{tabBarIcon: ({ color, size }) => (
+                <Icon name="account" color={color} size={size} />
+              ),}}/>
         </Tab.Navigator>
     );
 }
@@ -31,9 +48,9 @@ function MyStack() {
     return (
         <Stack.Navigator >
             <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
-            <Stack.Screen name="Registrarse" component={RegisterScreen} />
+            <Stack.Screen name="Registrarse" component={RegisterScreen} options={{headerShown:false}} />
             <Stack.Screen name="Recuperar" component={PasswordScreen} />
-            <Stack.Screen name="BottomTab" component={MyTabs} />
+            <Stack.Screen name="BottomTab" component={MyTabs} options={{headerShown:false}}/>
         </Stack.Navigator>
     );
 }

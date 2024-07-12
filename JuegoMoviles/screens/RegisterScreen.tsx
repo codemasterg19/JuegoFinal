@@ -1,113 +1,204 @@
-import React from 'react'
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { ButtonComponent } from '../components/ButtonComponent';
-import { PRIMARY_COLOR, TEXT_COLOR } from '../commons/constantsColor';
+import React, { useState } from "react";
+import { Alert, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity } from "react-native";
+import { ButtonComponent } from "../components/ButtonComponent";
+import { PRIMARY_COLOR, TEXT_COLOR } from "../commons/constantsColor";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/Config";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-export const RegisterScreen = ({ navigation }: any) => {
+export default function RegisterScreen({ navigation }: any) {
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirma, setConfirma] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [firstName, onChangeFirstName] = React.useState('');
-  const [lastName, onChangeLastName] = React.useState('');
-  const [number, onChangeNumber] = React.useState('');
-  const [email, onChangeEmail] = React.useState('');
-  const [user, onChangeUser] = React.useState('');
-  const [password, onChangePassword] = React.useState('');
-  const [confirm, onChangeConfirm] = React.useState('');
+  function getErrorMessage(errorCode: any) {
+    switch (errorCode) {
+      case "auth/email-already-in-use":
+        return "El correo electrónico ya está en uso por otra cuenta.";
+      case "auth/invalid-email":
+        return "El formato del correo electrónico no es válido.";
+      case "auth/operation-not-allowed":
+        return "La operación no está permitida. Por favor, contacta al soporte.";
+      case "auth/weak-password":
+        return "La contraseña proporcionada es demasiado débil.";
+      case "auth/network-request-failed":
+        return "La solicitud de red ha fallado. Por favor, verifica tu conexión a internet.";
+      case "auth/internal-error":
+        return "Ha ocurrido un error interno. Por favor, inténtalo de nuevo.";
+      case "auth/requires-recent-login":
+        return "Esta operación es sensible y requiere autenticación reciente. Inicia sesión nuevamente antes de intentar esta solicitud.";
+      default:
+        return "Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo.";
+    }
+  }
+
+  function registro() {
+    if (password !== confirma) {
+      Alert.alert("Error de Registro", "Las contraseñas no coinciden.");
+      return;
+    }
+    createUserWithEmailAndPassword(auth, correo, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("Usuario registrado:", user.email);
+        Alert.alert(
+          "Registro Exitoso",
+          "El usuario se ha registrado correctamente.",
+          [{ text: "OK", onPress: () => navigation.navigate("Login") }]
+        );
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = getErrorMessage(errorCode);
+        console.error(`Error Code: ${errorCode}, Message: ${error.message}`);
+        Alert.alert("Error de Registro", errorMessage);
+      });
+  }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.container1}>
-        <Text style={styles.textStart}>DATOS DE REGISTRO</Text>
-        <Text style={styles.texto}>Nombre:</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.title}>REGISTRARSE</Text>
+
         <TextInput
           style={styles.input}
-          onChangeText={onChangeFirstName}
-          value={firstName}
-          placeholder="Cristian"
+          onChangeText={setNombre}
+          value={nombre}
+          placeholder="Nombre"
         />
-        <Text style={styles.texto}>Apellido:</Text>
+
         <TextInput
           style={styles.input}
-          onChangeText={onChangeLastName}
-          value={lastName}
-          placeholder="Torres"
+          onChangeText={setApellido}
+          value={apellido}
+          placeholder="Apellido"
         />
-        <Text style={styles.texto}>Correo:</Text>
+
         <TextInput
           style={styles.input}
-          onChangeText={onChangeEmail}
-          value={email}
-          placeholder="cristiantorres@gmail.com"
+          onChangeText={setUsuario}
+          value={usuario}
+          placeholder="Usuario"
         />
-        <Text style={styles.texto}>Usuario:</Text>
+
         <TextInput
           style={styles.input}
-          onChangeText={onChangeUser}
-          value={user}
-          placeholder="cristiant"
+          placeholder="Correo electrónico"
+          onChangeText={(texto) => setCorreo(texto)}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
         />
-        <Text style={styles.texto}>Contraseña:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangePassword}
-          value={password}
-          placeholder="******"
-        />
-        <Text style={styles.texto}> Confirme la contraseña:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeConfirm}
-          value={confirm}
-          placeholder="******"
-        />
-        <View style={styles.containerB}>
-          <ButtonComponent title='REGISTRARSE' onPress={()=>navigation.navigate('RegisterScreen')}/>
-          <ButtonComponent title='INICIAR SESIÓN' onPress={()=>navigation.navigate('LoginScreen')}/>
+
+        <View style={styles.passwordContainer}>
+          <TextInput
+            placeholder="Contraseña"
+            style={styles.passwordInput}
+            onChangeText={(texto) => setPassword(texto)}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TouchableOpacity
+            style={styles.passwordVisibilityToggle}
+            onPress={() => setShowPassword(!showPassword)}
+          >
+            <FontAwesomeIcon
+              icon={showPassword ? faEye : faEyeSlash} // Icono de ojo abierto o cerrado según el estado de showPassword
+              size={20} // Tamaño del ícono
+              color={TEXT_COLOR} // Color del ícono
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.passwordContainer}>
+          <TextInput
+            placeholder="Confirmar Contraseña"
+            style={styles.passwordInput}
+            onChangeText={(texto) => setConfirma(texto)}
+            secureTextEntry={!showConfirmPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TouchableOpacity
+            style={styles.passwordVisibilityToggle}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <FontAwesomeIcon
+              icon={showConfirmPassword ? faEye : faEyeSlash} // Icono de ojo abierto o cerrado según el estado de showConfirmPassword
+              size={20} // Tamaño del ícono
+              color={TEXT_COLOR} // Color del ícono
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <ButtonComponent title="Registrarse" onPress={registro} />
+          <ButtonComponent
+            title="Regresar"
+            onPress={() => navigation.navigate("Login")}
+          />
         </View>
       </View>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:PRIMARY_COLOR,
+  container: {
+    flexGrow: 1,
+    backgroundColor: PRIMARY_COLOR,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  container1:{
-    backgroundColor:PRIMARY_COLOR,
-    alignItems:'center',
-    width:'100%',
-    marginVertical:20,
-    // gap:10,
+  formContainer: {
+    width: "80%",
+    alignItems: "center",
   },
-  containerB:{
-    marginTop:10,
-    gap:20,
-  },
-  logo:{
-    height: 100,
-    width:300,
-    resizeMode:'contain'
-  },
-  textStart: {
+  title: {
     color: TEXT_COLOR,
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign:'center',
-    marginBottom:10,
-  },
-  texto:{
-    color:TEXT_COLOR,
-    fontWeight: 'bold',
-    textAlign:'center',
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   input: {
-    backgroundColor:'white',
-    color:'black',
-    width:200,
+    backgroundColor: "white",
+    color: "black",
+    width: "100%",
     height: 40,
-    marginVertical:10,
+    marginVertical: 10,
     borderWidth: 1,
     padding: 10,
+  },
+  passwordContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  passwordInput: {
+    backgroundColor: "white",
+    color: "black",
+    width: "85%",
+    height: 40,
+    borderWidth: 1,
+    padding: 10,
+  },
+  passwordVisibilityToggle: {
+    width: "15%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    flexDirection:'row',
+    marginTop:20,
+    gap:20,
   },
 });

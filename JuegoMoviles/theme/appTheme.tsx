@@ -5,6 +5,7 @@ import {BUTTON_COLOR, INPUT_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TEXT_COLOR} f
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: PRIMARY_COLOR,
+    paddingTop:40,
     padding:20,
     gap:30,
   },
