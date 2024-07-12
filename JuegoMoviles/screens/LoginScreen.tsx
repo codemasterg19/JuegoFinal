@@ -1,9 +1,56 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View,ImageBackground } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View,ImageBackground, Alert, Button } from 'react-native';
 import { ButtonComponent } from '../components/ButtonComponent';
+
+//FIREBASE
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../config/Config';
+
+
 
 export default function LoginScreen({ navigation }: any) {
  
+  const [correo, setCorreo] = useState('')
+  const [contraseña, setContraseña] = useState('')
+
+
+  function login() {
+    signInWithEmailAndPassword(auth, correo, contraseña)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        navigation.navigate("MyTabs")
+        
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        let titulo=""; 
+        let mensaje="";
+
+        if (errorCode == 'auth/invalid-email'){
+          titulo="Correo inválido"
+          mensaje="Revisar que el email sea correcto"
+        }else if(errorCode == "auth/user-not-found") {
+          titulo="Error de usuario"
+          mensaje="El usuario no se encuentra registrado"
+        }else if(errorCode=="auth/wrong-password"){
+          titulo="Error de contraseña"
+          mensaje="Revisar si la contraseña está bien escrita"
+        }else{
+           titulo="Error"
+          mensaje="Revisar credenciales"
+        }
+
+        console.log(errorCode);
+        console.log(errorMessage);
+        
+        Alert.alert(titulo, mensaje)
+      });
+  }
 
   return (
     
@@ -28,7 +75,7 @@ export default function LoginScreen({ navigation }: any) {
         secureTextEntry
       />
       <View style={styles.containerB}>
-        <ButtonComponent title='INICIAR SESIÓN' onPress={()=>navigation.navigate('BottomTab')}/>
+        <Button title='Entrar' onPress={() => login()}/>
         <ButtonComponent title='REGISTRARSE' onPress={()=>navigation.navigate('Registrarse')}/>
       </View>
       <TouchableOpacity style={styles.Botones2} onPress={()=> navigation.navigate("Recuperar")}>
