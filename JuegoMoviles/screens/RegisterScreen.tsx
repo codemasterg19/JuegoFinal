@@ -3,9 +3,11 @@ import { Alert, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity 
 import { ButtonComponent } from "../components/ButtonComponent";
 import { PRIMARY_COLOR, TEXT_COLOR } from "../commons/constantsColor";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/Config";
+import { set, ref } from "firebase/database"; // Asegúrate de importar estas funciones de Firebase
+ // Importa la referencia a la base de datos Firebase
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { auth, db } from "../config/Config";
 
 export default function RegisterScreen({ navigation }: any) {
   const [nombre, setNombre] = useState("");
@@ -43,21 +45,55 @@ export default function RegisterScreen({ navigation }: any) {
       Alert.alert("Error de Registro", "Las contraseñas no coinciden.");
       return;
     }
+    registrarUsuario();
+  }
+
+  function registrarUsuario() {
     createUserWithEmailAndPassword(auth, correo, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("Usuario registrado:", user.email);
+        console.log('Usuario registrado:', user.uid);
+
+        // Guardar los datos en la base de datos
+        guardarRegistro(user.uid);
+
+        // Navegar a la pantalla de login después del registro exitoso
         Alert.alert(
           "Registro Exitoso",
           "El usuario se ha registrado correctamente.",
           [{ text: "OK", onPress: () => navigation.navigate("Login") }]
         );
+
+        // Reiniciar los estados de los campos de texto
+        setNombre('');
+        setApellido('');
+        setCorreo('');
+        setPassword('');
+        setConfirma('');
+        setUsuario('');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = getErrorMessage(errorCode);
-        console.error(`Error Code: ${errorCode}, Message: ${error.message}`);
+        console.log(`Error Code: ${errorCode}, Message: ${error.message}`);
         Alert.alert("Error de Registro", errorMessage);
+      });
+  }
+
+  function guardarRegistro(userId: string) {
+    // Utilizamos userId como parte de los datos a guardar en la base de datos
+    set(ref(db, `usuarios/${userId}`), {
+      nombre: nombre,
+      apellido: apellido,
+      usuario: usuario,
+      correo: correo,
+      password:password
+    })
+      .then(() => {
+        console.log('Datos guardados en la base de datos para el usuario:', userId);
+      })
+      .catch((error) => {
+        console.error('Error al guardar en la base de datos:', error);
       });
   }
 
@@ -197,8 +233,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonContainer: {
-    flexDirection:'row',
-    marginTop:20,
-    gap:20,
+    flexDirection: 'row',
+    marginTop: 20,
+    gap: 20,
   },
 });
