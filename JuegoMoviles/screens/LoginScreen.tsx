@@ -20,7 +20,12 @@ export default function LoginScreen({ navigation }: any) {
         // Signed in 
         const user = userCredential.user;
         console.log(user);
-        navigation.navigate("MyTabs")
+        //navigation.navigate("BottomTab")
+        Alert.alert(
+          "Ingreso exitoso",
+          "Bienvenido",
+          [{ text: "OK", onPress: () => navigation.navigate("BottomTab") }]
+        );
         
         // ...
       })
@@ -65,13 +70,15 @@ export default function LoginScreen({ navigation }: any) {
       <Text style={styles.titulo}>INGRESO GAMER</Text>
       <TextInput
         style={styles.containerimput}
-        placeholder="Usuario"
+        placeholder="Correo electronico"
         autoCorrect={false} 
+        onChangeText={(texto) => (setCorreo(texto))}
         
       />
       <TextInput
         style={styles.containerimput}
         placeholder="Contraseña"
+        onChangeText={(texto) => (setContraseña(texto))}
         secureTextEntry
       />
       <View style={styles.containerB}>
