@@ -143,6 +143,7 @@ const JuegoMemoria: React.FC = () => {
 
   const handleEndGame = () => {
     startNewGame(1); // Reiniciar el juego al nivel 1
+    setLevel(1);
   };
 
   const calculateCardSize = () => {
