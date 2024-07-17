@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { ref, onValue } from 'firebase/database';
 import { db } from '../config/Config'; // Asegúrate de importar correctamente la configuración de Firebase
+
+const windowWidth = Dimensions.get('window').width;
 
 export default function ScoreScreen() {
   const [scores, setScores] = useState([]);
@@ -14,7 +16,7 @@ export default function ScoreScreen() {
       const data = snapshot.val();
       if (data) {
         // Convertir el objeto de puntajes a un array de objetos para usar en FlatList
-        const scoresArray: any = Object.keys(data).map((key) => ({
+        const scoresArray : any = Object.keys(data).map((key) => ({
           id: key,
           user: data[key].user,
           score: data[key].score,
@@ -22,6 +24,8 @@ export default function ScoreScreen() {
           nivel: data[key].nivel,
           intentos: data[key].intentos,
         }));
+        // Ordenar puntajes de mayor a menor
+        scoresArray.sort((a: any, b: any) => b.score - a.score);
         setScores(scoresArray);
       }
     });
@@ -32,23 +36,27 @@ export default function ScoreScreen() {
     };
   }, []);
 
-  const renderScoreItem = ({ item }: any) => (
-    <View style={styles.scoreItem}>
-      <Text>Usuario: {item.user}</Text>
-      <Text>Puntaje: {item.score}</Text>
-      <Text>Tiempo: {item.time}</Text>
-      <Text>Nivel: {item.nivel}</Text>
-      <Text>Intentos: {item.intentos}</Text>
+  const renderScoreItem = ({ item, index }: { item: any; index: number }) => (
+    <View style={[styles.scoreItem, index % 2 === 1 ? styles.darkRow : styles.lightRow]}>
+      <Text style={styles.rank}>{index + 1}</Text>
+      <Text style={styles.userName}>{item.user}</Text>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.score}>Puntaje: {item.score}</Text>
+        <Text style={styles.time}>Tiempo: {item.time}</Text>
+        <Text style={styles.nivel}>Nivel: {item.nivel}</Text>
+        <Text style={styles.intentos}>Intentos: {item.intentos}</Text>
+      </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Lista de Puntajes</Text>
+      <Text style={styles.title}>Tabla de Puntajes</Text>
       <FlatList
         data={scores}
         renderItem={renderScoreItem}
-         style={styles.list}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.list}
       />
     </View>
   );
@@ -57,23 +65,74 @@ export default function ScoreScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#1a1a1a',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    paddingVertical: 50,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
+    color: '#fff',
     marginBottom: 20,
   },
   list: {
-    width: '100%',
+    width: windowWidth,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   scoreItem: {
-    backgroundColor: '#f0f0f0',
-    padding: 10,
-    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     borderRadius: 8,
-    width: '100%',
+    marginBottom: 10,
+    width: windowWidth - 40,
+    maxWidth: 600,
+  },
+  darkRow: {
+    backgroundColor: '#333',
+  },
+  lightRow: {
+    backgroundColor: '#444',
+  },
+  rank: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    width: 40,
+    textAlign: 'center',
+  },
+  userName: {
+    flex: 1,
+    fontSize: 18,
+    color: '#fff',
+    marginLeft: 10,
+  },
+  detailsContainer: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  score: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 4,
+  },
+  time: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 4,
+  },
+  nivel: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 4,
+  },
+  intentos: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 4,
   },
 });
