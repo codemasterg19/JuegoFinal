@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,10 +7,27 @@ import {
   View,
 } from 'react-native';
 import { INPUT_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TEXT_COLOR } from '../commons/constantsColor';
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { Alert } from 'react-native';
+import LoginScreen from './LoginScreen';
 
 
-export const PasswordScreen = () => {
-  const [email, onChangeEmail] = React.useState('');
+export const PasswordScreen = ({ navigation }: any) => {
+  const [email, setEmail] = useState('');
+  const auth = getAuth();
+
+  const handlePasswordReset = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert('Éxito', 'Correo de restablecimiento de contraseña enviado.');
+        setEmail('');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert('Error', errorMessage);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -19,12 +36,16 @@ export const PasswordScreen = () => {
         <Text style={styles.texto}>Ingrese su email y se enviará un código para la recuperación de la contraseña</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeEmail}
+          onChangeText={setEmail}
           value={email}
-          placeholder="cristiantorres@gmail.com"
+          placeholder="Ponga su correo"
+          keyboardType="email-address"
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
           <Text style={styles.texto}>Enviar código</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.texto}>Regresar login</Text>
         </TouchableOpacity>
       </View>
     </View>

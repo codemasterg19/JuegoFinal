@@ -49,7 +49,7 @@ function MyStack() {
         <Stack.Navigator >
             <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
             <Stack.Screen name="Registrarse" component={RegisterScreen} options={{headerShown:false}} />
-            <Stack.Screen name="Recuperar" component={PasswordScreen} />
+            <Stack.Screen name="Recuperar"   component={PasswordScreen}   options={{headerShown:false}} />
             <Stack.Screen name="BottomTab" component={MyTabs} options={{headerShown:false}}/>
         </Stack.Navigator>
     );
