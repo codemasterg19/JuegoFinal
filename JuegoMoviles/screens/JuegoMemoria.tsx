@@ -178,7 +178,7 @@ const JuegoMemoria: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.gameTitle}> Juego de Memoria🎮 </Text>
+        <Text style={styles.gameTitle}> Memory 🎮 </Text>
         <View style={styles.scoreLevelContainer}>
           <Text style={styles.scoreText}>Score: {score} 🃏</Text>
           <Text style={styles.levelText}>Nivel: {level}</Text>
@@ -232,6 +232,7 @@ const JuegoMemoria: React.FC = () => {
             ) : (
               <>
                 <Text style={styles.modalText}>¡Ganaste! 🎉</Text>
+                <Text style={styles.modalText}>Tiempo: {elapsedTime.toFixed(2)} segundos</Text> 
                 <TouchableOpacity style={styles.button} onPress={handleNextLevel}>
                   <Text style={styles.buttonText}>Siguiente Nivel</Text>
                 </TouchableOpacity>
@@ -254,7 +255,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0f172a',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingTop: 30
+    paddingTop: 40
   },
   header: {
     width: '100%',
