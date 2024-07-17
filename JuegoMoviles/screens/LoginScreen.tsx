@@ -4,9 +4,7 @@ import { ButtonComponent } from '../components/ButtonComponent';
 
 //FIREBASE
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../config/Config';
-
-
+import { auth, db } from '../config/Config';
 
 export default function LoginScreen({ navigation }: any) {
  
@@ -24,10 +22,8 @@ export default function LoginScreen({ navigation }: any) {
         Alert.alert(
           "Ingreso exitoso",
           "Bienvenido",
-          [{ text: "OK", onPress: () => navigation.navigate("BottomTab") }]
+          [{ text: "OK", onPress: () => navigation.navigate("ImagenPerfil") }]
         );
-        
-        // ...
       })
       .catch((error) => {
         const errorCode = error.code;
