@@ -1,11 +1,14 @@
-import { Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { BUTTON_COLOR, SECONDARY_COLOR, TEXT_COLOR } from '../commons/constantsColor';
 import { IconComponent } from '../components/IconComponent';
 import { BodyComponent } from '../components/BodyComponent';
 import { IconComponentSmall } from '../components/IconComponentSmall';
 import { styles } from '../theme/appTheme';
- 
+import { db, auth } from '../config/Config';
+import { onValue, ref as dbRef, update } from 'firebase/database';
+import { signOut } from 'firebase/auth';
+
 export default function PerfilScreen({ navigation }: any) {
 
   const [nombre, setNombre] = useState("");
@@ -16,16 +19,65 @@ export default function PerfilScreen({ navigation }: any) {
   const [confirma, setConfirma] = useState("");
   const [image, setImage] = useState('');
 
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      const userId = user.uid;
+      const userRef = dbRef(db, `usuarios/${userId}`);
+      onValue(userRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setNombre(data.nombre || '');
+          setApellido(data.apellido || '');
+          setCorreo(user.email || '');
+          setUsuario(data.usuario || '');
+          setImage(data.imageURL || '');
+        }
+      });
+    }
+  }, []);
+
+  const editarDatos = async () => {
+    try {
+      const userId = auth.currentUser?.uid;
+      if (userId) {
+        const userRef = dbRef(db, `usuarios/${userId}`);
+        await update(userRef, {
+          nombre,
+          apellido,
+          usuario,
+          // No guardamos la contraseña por seguridad
+        });
+        Alert.alert('Éxito', 'Datos actualizados correctamente');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Error al actualizar los datos');
+      console.error('Error al actualizar los datos:', error);
+    }
+  };
+
+  const cierreSesion = async () => {
+    try {
+      await signOut(auth);
+      navigation.navigate('Login');
+    } catch (error) {
+      Alert.alert('Error', 'Error al cerrar sesión');
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Hola, administra tu cuenta</Text>
-          <IconComponent pathImage='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdsU9PD6epuU1Eolx_ElhxRlZwjYKUiJNDzw&usqp=CAU'/>
+          <IconComponent onPress={cierreSesion}
+          pathImage='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdsU9PD6epuU1Eolx_ElhxRlZwjYKUiJNDzw&usqp=CAU'/>
         </View>
         <BodyComponent>
-          <View style={stylesI.containerM}>
+          <View style={stylesI.containerP}>
             <Text style={styles.title}>Datos de usuario</Text>
+            {image && <Image source={{ uri: image }} style={stylesI.containerF} />}
             <TextInput
               style={styles.input}
               onChangeText={setNombre}
@@ -51,11 +103,13 @@ export default function PerfilScreen({ navigation }: any) {
               style={styles.input}
               placeholder="Correo electrónico"
               onChangeText={(texto) => setCorreo(texto)}
+              value={correo}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
             />
           </View>
+          <Button title="Guardar cambios" color={SECONDARY_COLOR} onPress={editarDatos} />
           <View style={stylesI.containerM}>
             <Text style={stylesI.text}>Datos</Text>
             <IconComponentSmall title='Soporte' 
@@ -101,7 +155,7 @@ const stylesI = StyleSheet.create({
     justifyContent: 'flex-start',
     gap:20,
   },
-  containerP: {
+  containerF: {
     width:150,
     height:150,
     marginVertical:20,
@@ -109,9 +163,13 @@ const stylesI = StyleSheet.create({
   },
   containerM: {
     backgroundColor:BUTTON_COLOR,
-    marginTop:20,
     paddingTop:15,
-    paddingLeft:20,
+    paddingLeft:10,
+    borderRadius:25,
+  },
+  containerP: {
+    backgroundColor:BUTTON_COLOR,
+    padding:20,
     borderRadius:25,
   },
   text:{

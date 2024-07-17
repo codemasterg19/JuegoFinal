@@ -28,7 +28,7 @@ export default function LoginScreen({ navigation }: any) {
         Alert.alert(
           "Ingreso exitoso",
           "Bienvenido",
-          [{ text: "OK", onPress: () => navigation.navigate("ImagenPerfil") }]
+          [{ text: "OK", onPress: () => navigation.navigate("BottomTab") }]
         );
       })
       .catch((error) => {

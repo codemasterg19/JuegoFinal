@@ -29,11 +29,8 @@
     "react-native-responsive-screen": "^1.4.2",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^10.1.0",
-<<<<<<< HEAD
-    "expo-image-picker": "~15.0.7"
-=======
+    "expo-image-picker": "~15.0.7",
     "expo-linear-gradient": "~13.0.2"
->>>>>>> ac078417e6cde34c655239cd3b61d9b4fae858a8
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
