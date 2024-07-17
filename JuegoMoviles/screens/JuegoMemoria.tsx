@@ -1,9 +1,11 @@
 import * as React from "react";
 import { StatusBar } from "expo-status-bar";
-import { Dimensions, SafeAreaView, StyleSheet, Text, View, Modal, TouchableOpacity, ScrollView, Animated } from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet, Text, View, Modal, TouchableOpacity, ScrollView, Animated, Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from '@expo/vector-icons'; // Importar FontAwesome para el trofeo
 import Card from "../components/Card";
+import { auth, db } from "../config/Config";
+import { ref, set } from "firebase/database";
 
 // Obtener las dimensiones de la pantalla
 const { width } = Dimensions.get('window');
@@ -40,6 +42,34 @@ const JuegoMemoria: React.FC = () => {
   const [averageScore, setAverageScore] = React.useState<number>(0); // Promedio final de los scores
   const [totalGameTime, setTotalGameTime] = React.useState<number>(0); // Tiempo total de juego acumulado
   const spinValue = new Animated.Value(0); // Para la animación de la carta girando
+
+  ////guardar datos
+  const guardarScore = async (score: number, elapsedTime: number, level: number, remainingAttempts: number) => {
+    try {
+      // Obtener el ID del usuario actual
+      const usuario = auth.currentUser?.uid;
+  
+      if (!usuario) {
+        throw new Error('No se pudo obtener el ID del usuario');
+      }
+  
+      // Guardar el puntaje en Firebase Realtime Database
+      await set(ref(db, `scores/${usuario}`), {
+        user: usuario,
+        score: score,
+        time: elapsedTime,
+        nivel: level,
+        intentos: remainingAttempts
+      });
+  
+      // Mostrar un mensaje de éxito al usuario
+      Alert.alert("Éxito", "Puntaje guardado correctamente");
+    } catch (error) {
+      console.error("Error guardando el puntaje", error);
+      // Mostrar un mensaje de error al usuario
+      Alert.alert("Error", "No se pudo guardar el puntaje");
+    }
+  };
 
   React.useEffect(() => {
     startNewGame(level);
@@ -139,6 +169,7 @@ const JuegoMemoria: React.FC = () => {
   const handleNextLevel = () => {
     setLevel(level + 1);
     startNewGame(level + 1);
+    guardarScore(score, elapsedTime, level, remainingAttempts);
   };
 
   const handleEndGame = () => {
