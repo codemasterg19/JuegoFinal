@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('5%'),
   },
   title: {
-    fontFamily: 'Roboto-Black',
     fontSize: 25,
     color: '#fff',
     alignSelf: 'center',
