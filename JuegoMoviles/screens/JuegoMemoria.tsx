@@ -1,9 +1,11 @@
 import * as React from "react";
 import { StatusBar } from "expo-status-bar";
-import { Dimensions, SafeAreaView, StyleSheet, Text, View, Modal, TouchableOpacity, ScrollView, Animated } from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet, Text, View, Modal, TouchableOpacity, ScrollView, Animated, Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from '@expo/vector-icons'; // Importar FontAwesome para el trofeo
 import Card from "../components/Card";
+import { auth, db } from "../config/Config";
+import { ref, set } from "firebase/database";
 
 // Obtener las dimensiones de la pantalla
 const { width } = Dimensions.get('window');
@@ -40,6 +42,34 @@ const JuegoMemoria: React.FC = () => {
   const [averageScore, setAverageScore] = React.useState<number>(0); // Promedio final de los scores
   const [totalGameTime, setTotalGameTime] = React.useState<number>(0); // Tiempo total de juego acumulado
   const spinValue = new Animated.Value(0); // Para la animación de la carta girando
+
+  ////guardar datos
+  const guardarScore = async (score: number, elapsedTime: number, level: number, remainingAttempts: number) => {
+    try {
+      // Obtener el ID del usuario actual
+      const usuario = auth.currentUser?.uid;
+  
+      if (!usuario) {
+        throw new Error('No se pudo obtener el ID del usuario');
+      }
+  
+      // Guardar el puntaje en Firebase Realtime Database
+      await set(ref(db, `scores/${usuario}`), {
+        user: usuario,
+        score: score,
+        time: elapsedTime,
+        nivel: level,
+        intentos: remainingAttempts
+      });
+  
+      // Mostrar un mensaje de éxito al usuario
+      Alert.alert("Éxito", "Puntaje guardado correctamente");
+    } catch (error) {
+      console.error("Error guardando el puntaje", error);
+      // Mostrar un mensaje de error al usuario
+      Alert.alert("Error", "No se pudo guardar el puntaje");
+    }
+  };
 
   React.useEffect(() => {
     startNewGame(level);
@@ -139,6 +169,7 @@ const JuegoMemoria: React.FC = () => {
   const handleNextLevel = () => {
     setLevel(level + 1);
     startNewGame(level + 1);
+    guardarScore(score, elapsedTime, level, remainingAttempts);
   };
 
   const handleEndGame = () => {
@@ -178,9 +209,9 @@ const JuegoMemoria: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.gameTitle}> Juego de Memoria🎮 </Text>
+        <Text style={styles.gameTitle}> Memory 🎮 </Text>
         <View style={styles.scoreLevelContainer}>
-          <Text style={styles.scoreText}>Score: {score} 🃏</Text>
+          <Text style={styles.scoreText}>Score: {score} </Text>
           <Text style={styles.levelText}>Nivel: {level}</Text>
         </View>
         <Text style={styles.attemptsText}>Intentos restantes: {remainingAttempts}</Text>
@@ -232,6 +263,7 @@ const JuegoMemoria: React.FC = () => {
             ) : (
               <>
                 <Text style={styles.modalText}>¡Ganaste! 🎉</Text>
+                <Text style={styles.modalText}>Tiempo: {elapsedTime.toFixed(2)} segundos</Text> 
                 <TouchableOpacity style={styles.button} onPress={handleNextLevel}>
                   <Text style={styles.buttonText}>Siguiente Nivel</Text>
                 </TouchableOpacity>
@@ -251,10 +283,10 @@ const JuegoMemoria: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#002351',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingTop: 30
+    paddingTop: 50
   },
   header: {
     width: '100%',
@@ -312,19 +344,35 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   restartButton: {
-    backgroundColor: '#3aafa9',
-    padding: 15,
-    borderRadius: 10,
-    margin: 20,
-    alignItems: 'center',
-    width: '80%',
-    alignSelf: 'center',
+    backgroundColor: '#72acf8',      // Color de fondo
+    paddingVertical: 12,             // Relleno vertical
+    paddingHorizontal: 24,          // Relleno horizontal
+    borderRadius: 25,                // Borde redondeado más pronunciado
+    marginVertical: 10,              // Margen vertical
+    alignItems: 'center',            // Alinear contenido al centro
+    width: '70%',                    // Ancho del botón
+    alignSelf: 'center',             // Alinear el botón al centro horizontalmente
+    borderWidth: 2,                  // Ancho del borde
+    borderColor: '#fff',             // Color del borde
+    shadowColor: '#000',             // Color de la sombra
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,              // Opacidad de la sombra
+    shadowRadius: 4,                 // Radio de la sombra
+    elevation: 5,                    // Elevación para Android
+    marginBottom:50
   },
+  
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
+    textTransform: 'uppercase',     // Convertir texto a mayúsculas
+    letterSpacing: 1,                // Espaciado entre letras
   },
+  
   modalContainer: {
     flex: 1,
     justifyContent: 'center',

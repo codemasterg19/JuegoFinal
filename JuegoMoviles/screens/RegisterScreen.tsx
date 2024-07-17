@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { auth, db } from "../config/Config";
 
+
 export default function RegisterScreen({ navigation }: any) {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");

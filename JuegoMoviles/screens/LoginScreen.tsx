@@ -4,7 +4,10 @@ import { ButtonComponent } from '../components/ButtonComponent';
 
 //FIREBASE
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from '../config/Config';
+import { auth } from '../config/Config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 export default function LoginScreen({ navigation }: any) {
  
@@ -18,6 +21,9 @@ export default function LoginScreen({ navigation }: any) {
         // Signed in 
         const user = userCredential.user;
         console.log(user);
+
+              // Guardar el ID del usuario en AsyncStorage
+      AsyncStorage.setItem('userId', user.uid);
         //navigation.navigate("BottomTab")
         Alert.alert(
           "Ingreso exitoso",
