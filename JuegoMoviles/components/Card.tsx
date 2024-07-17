@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = ({ onPress, isTurnedOver, children, size }) =>
       {isTurnedOver ? (
         <Text style={styles.text}>{children}</Text>
       ) : (
-        <Text style={styles.text}>?</Text>
+        <Text style={styles.text}>🃏</Text>
       )}
     </Pressable>
   );
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   cardDown: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#3b82f6",
+    backgroundColor: "#8fddfe",
     margin: 10,
     borderRadius: 8,
     shadowColor: "#000",

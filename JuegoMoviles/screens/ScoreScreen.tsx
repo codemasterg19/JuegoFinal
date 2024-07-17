@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 50,
+    paddingTop:50
   },
   title: {
     fontSize: 28,
@@ -93,10 +94,10 @@ const styles = StyleSheet.create({
     maxWidth: 600,
   },
   darkRow: {
-    backgroundColor: '#333',
+    backgroundColor: '#253746', // Azul oscuro
   },
   lightRow: {
-    backgroundColor: '#444',
+    backgroundColor: '#3E5C76', // Azul medio
   },
   rank: {
     fontSize: 18,
@@ -117,22 +118,22 @@ const styles = StyleSheet.create({
   },
   score: {
     fontSize: 16,
-    color: '#fff',
+    color: '#C3D4DF', // Azul claro
     marginBottom: 4,
   },
   time: {
     fontSize: 16,
-    color: '#fff',
+    color: '#C3D4DF', // Azul claro
     marginBottom: 4,
   },
   nivel: {
     fontSize: 16,
-    color: '#fff',
+    color: '#C3D4DF', // Azul claro
     marginBottom: 4,
   },
   intentos: {
     fontSize: 16,
-    color: '#fff',
+    color: '#C3D4DF', // Azul claro
     marginBottom: 4,
   },
 });

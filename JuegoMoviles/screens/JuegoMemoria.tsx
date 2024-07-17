@@ -211,7 +211,7 @@ const JuegoMemoria: React.FC = () => {
       <View style={styles.header}>
         <Text style={styles.gameTitle}> Memory 🎮 </Text>
         <View style={styles.scoreLevelContainer}>
-          <Text style={styles.scoreText}>Score: {score} 🃏</Text>
+          <Text style={styles.scoreText}>Score: {score} </Text>
           <Text style={styles.levelText}>Nivel: {level}</Text>
         </View>
         <Text style={styles.attemptsText}>Intentos restantes: {remainingAttempts}</Text>
@@ -283,10 +283,10 @@ const JuegoMemoria: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#002351',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingTop: 40
+    paddingTop: 50
   },
   header: {
     width: '100%',
@@ -344,19 +344,35 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   restartButton: {
-    backgroundColor: '#3aafa9',
-    padding: 15,
-    borderRadius: 10,
-    margin: 20,
-    alignItems: 'center',
-    width: '80%',
-    alignSelf: 'center',
+    backgroundColor: '#72acf8',      // Color de fondo
+    paddingVertical: 12,             // Relleno vertical
+    paddingHorizontal: 24,          // Relleno horizontal
+    borderRadius: 25,                // Borde redondeado más pronunciado
+    marginVertical: 10,              // Margen vertical
+    alignItems: 'center',            // Alinear contenido al centro
+    width: '70%',                    // Ancho del botón
+    alignSelf: 'center',             // Alinear el botón al centro horizontalmente
+    borderWidth: 2,                  // Ancho del borde
+    borderColor: '#fff',             // Color del borde
+    shadowColor: '#000',             // Color de la sombra
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,              // Opacidad de la sombra
+    shadowRadius: 4,                 // Radio de la sombra
+    elevation: 5,                    // Elevación para Android
+    marginBottom:50
   },
+  
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
+    textTransform: 'uppercase',     // Convertir texto a mayúsculas
+    letterSpacing: 1,                // Espaciado entre letras
   },
+  
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
