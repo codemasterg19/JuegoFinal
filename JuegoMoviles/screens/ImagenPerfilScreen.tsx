@@ -73,7 +73,7 @@ export default function ImagenPerfilScreen({ navigation }: any) {// Puedes decid
       }
 
       Alert.alert('Éxito', 'Imagen de perfil subida correctamente',
-        [{onPress: () => navigation.navigate("BottomTab")}]
+        [{onPress: () => navigation.navigate('Perfil', { imageURL })}]
       );
 
     } catch (error) {

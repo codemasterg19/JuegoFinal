@@ -1,4 +1,4 @@
-import { Alert, Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Alert, Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { BUTTON_COLOR, SECONDARY_COLOR, TEXT_COLOR } from '../commons/constantsColor';
 import { IconComponent } from '../components/IconComponent';
@@ -8,8 +8,9 @@ import { styles } from '../theme/appTheme';
 import { db, auth } from '../config/Config';
 import { onValue, ref as dbRef, update } from 'firebase/database';
 import { signOut } from 'firebase/auth';
+import { ButtonComponent } from '../components/ButtonComponent';
 
-export default function PerfilScreen({ navigation }: any) {
+export default function PerfilScreen({ navigation, route }: any) {
 
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -18,6 +19,7 @@ export default function PerfilScreen({ navigation }: any) {
   const [password, setPassword] = useState("");
   const [confirma, setConfirma] = useState("");
   const [image, setImage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -31,13 +33,18 @@ export default function PerfilScreen({ navigation }: any) {
           setApellido(data.apellido || '');
           setCorreo(user.email || '');
           setUsuario(data.usuario || '');
-          setImage(data.imageURL || '');
+          setImage(route.params?.imageURL || data.imageURL || '');
         }
       });
     }
-  }, []);
+
+    if (route.params?.imageURL) {
+      setImage(route.params.imageURL);
+    }
+  }, [route.params?.imageURL]);
 
   const editarDatos = async () => {
+    setLoading(true);
     try {
       const userId = auth.currentUser?.uid;
       if (userId) {
@@ -53,6 +60,8 @@ export default function PerfilScreen({ navigation }: any) {
     } catch (error) {
       Alert.alert('Error', 'Error al actualizar los datos');
       console.error('Error al actualizar los datos:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,7 +74,7 @@ export default function PerfilScreen({ navigation }: any) {
       console.error('Error al cerrar sesión:', error);
     }
   };
-
+  
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -78,38 +87,42 @@ export default function PerfilScreen({ navigation }: any) {
           <View style={stylesI.containerP}>
             <Text style={styles.title}>Datos de usuario</Text>
             {image && <Image source={{ uri: image }} style={stylesI.containerF} />}
-            <TextInput
-              style={styles.input}
-              onChangeText={setNombre}
-              value={nombre}
-              placeholder="Nombre"
-            />
+            <ButtonComponent title="Editar imagen de perfil" onPress={() => navigation.navigate('ImagenPerfil')}/>
+            <View style={stylesI.containerD}>
+              <TextInput
+                style={styles.input}
+                onChangeText={setNombre}
+                value={nombre}
+                placeholder="Nombre"
+              />
 
-            <TextInput
-              style={styles.input}
-              onChangeText={setApellido}
-              value={apellido}
-              placeholder="Apellido"
-            />
+              <TextInput
+                style={styles.input}
+                onChangeText={setApellido}
+                value={apellido}
+                placeholder="Apellido"
+              />
 
-            <TextInput
-              style={styles.input}
-              onChangeText={setUsuario}
-              value={usuario}
-              placeholder="Usuario"
-            />
+              <TextInput
+                style={styles.input}
+                onChangeText={setUsuario}
+                value={usuario}
+                placeholder="Usuario"
+              />
 
-            <TextInput
-              style={styles.input}
-              placeholder="Correo electrónico"
-              onChangeText={(texto) => setCorreo(texto)}
-              value={correo}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
+              <TextInput
+                style={styles.input}
+                placeholder="Correo electrónico"
+                onChangeText={(texto) => setCorreo(texto)}
+                value={correo}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </View>
           </View>
-          <Button title="Guardar cambios" color={SECONDARY_COLOR} onPress={editarDatos} />
+          {loading && <ActivityIndicator size="large" color={SECONDARY_COLOR} />}
+          <ButtonComponent title="Guardar cambios" onPress={editarDatos} />
           <View style={stylesI.containerM}>
             <Text style={stylesI.text}>Datos</Text>
             <IconComponentSmall title='Soporte' 
@@ -171,6 +184,11 @@ const stylesI = StyleSheet.create({
     backgroundColor:BUTTON_COLOR,
     padding:20,
     borderRadius:25,
+  },
+  containerD: {
+    paddingTop:10,
+    // paddingLeft:10,
+    // borderRadius:25,
   },
   text:{
     color: TEXT_COLOR,
