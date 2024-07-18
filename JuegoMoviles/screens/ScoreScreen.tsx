@@ -32,7 +32,7 @@ export default function ScoreScreen() {
             };
           });
           // Ordenar puntajes de mayor a menor
-          scoresArray.sort((a: any, b: any) => b.score - a.score);
+          scoresArray.sort((a: any, b: any) => b.time - a.time);
           setScores(scoresArray);
         });
       }
