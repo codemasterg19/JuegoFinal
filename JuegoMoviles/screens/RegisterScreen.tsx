@@ -63,8 +63,8 @@ export default function RegisterScreen({ navigation }: any) {
           "Registro Exitoso",
           "El usuario se ha registrado correctamente.",
           [{ text: "OK", onPress: () => navigation.navigate("Login") }]
+          
         );
-
         // Reiniciar los estados de los campos de texto
         setNombre('');
         setApellido('');
@@ -72,6 +72,7 @@ export default function RegisterScreen({ navigation }: any) {
         setPassword('');
         setConfirma('');
         setUsuario('');
+
       })
       .catch((error) => {
         const errorCode = error.code;
