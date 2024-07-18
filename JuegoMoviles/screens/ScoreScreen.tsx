@@ -14,23 +14,30 @@ export default function ScoreScreen() {
 
     // Escuchar cambios en los datos de Firebase Realtime Database
     onValue(scoresRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        // Convertir el objeto de puntajes a un array de objetos para usar en FlatList
-        const scoresArray : any = Object.keys(data).map((key) => ({
-          id: key,
-          user: data[key].user,
-          score: data[key].score,
-          time: data[key].time,
-          nivel: data[key].nivel,
-          intentos: data[key].intentos,
-        }));
-        // Ordenar puntajes de mayor a menor
-        scoresArray.sort((a: any, b: any) => b.score - a.score);
-        setScores(scoresArray);
+      const scoresData = snapshot.val();
+      if (scoresData) {
+        // Obtener los nombres de usuario de la base de datos de usuarios
+        onValue(usersRef, (usersSnapshot) => {
+          const usersData = usersSnapshot.val();
+          const scoresArray : any= Object.keys(scoresData).map((key) => {
+            // Encuentra el nombre de usuario correspondiente al ID
+            const userName = usersData[scoresData[key].user]?.nombre || 'Desconocido';
+            return {
+              id: key,
+              user: userName, // Usar el nombre en lugar del ID
+              score: scoresData[key].score,
+              time: scoresData[key].time,
+              nivel: scoresData[key].nivel,
+              intentos: scoresData[key].intentos,
+            };
+          });
+          // Ordenar puntajes de mayor a menor
+          scoresArray.sort((a: any, b: any) => b.score - a.score);
+          setScores(scoresArray);
+        });
       }
     });
-
+  
     // Devuelve una función de limpieza para limpiar el listener en unmount
     return () => {
       // Detener la escucha de cambios
