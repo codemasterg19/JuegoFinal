@@ -10,6 +10,7 @@ export default function ScoreScreen() {
 
   useEffect(() => {
     const scoresRef = ref(db, 'scores');
+    const usersRef  = ref(db, 'usuarios');
 
     // Escuchar cambios en los datos de Firebase Realtime Database
     onValue(scoresRef, (snapshot) => {
