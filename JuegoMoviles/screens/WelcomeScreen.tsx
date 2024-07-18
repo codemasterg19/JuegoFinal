@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonText: {
-    fontFamily: 'Roboto-Bold',
     fontSize: 15,
     color: '#2D97DA',
   },
