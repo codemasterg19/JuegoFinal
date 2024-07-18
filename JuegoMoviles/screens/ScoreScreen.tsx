@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
-import { ref, onValue } from 'firebase/database';
+import { ref, onValue, off } from 'firebase/database';
 import { db } from '../config/Config'; // Asegúrate de importar correctamente la configuración de Firebase
 
 const windowWidth = Dimensions.get('window').width;
@@ -12,8 +12,8 @@ export default function ScoreScreen() {
     const scoresRef = ref(db, 'scores');
     const usersRef = ref(db, 'usuarios'); // Referencia a la base de datos de usuarios
   
-    // Escuchar cambios en los datos de Firebase Realtime Database
-    onValue(scoresRef, (snapshot) => {
+    // Función para actualizar los puntajes
+    const updateScores = (snapshot) => {
       const scoresData = snapshot.val();
       if (scoresData) {
         // Obtener los nombres de usuario de la base de datos de usuarios
@@ -36,15 +36,18 @@ export default function ScoreScreen() {
           setScores(scoresArray);
         });
       }
-    });
-  
+    };
+
+    // Escuchar cambios en los datos de Firebase Realtime Database
+    onValue(scoresRef, updateScores);
+
     // Devuelve una función de limpieza para limpiar el listener en unmount
     return () => {
-      // Detener la escucha de cambios
+      off(scoresRef, updateScores); // Detener la escucha de cambios
     };
   }, []);
 
-  const renderScoreItem = ({ item, index }: { item: any; index: number }) => (
+  const renderScoreItem = ({ item, index }) => (
     <View style={[styles.scoreItem, index % 2 === 1 ? styles.darkRow : styles.lightRow]}>
       <Text style={styles.rank}>{index + 1}</Text>
       <Text style={styles.userName}>{item.user}</Text>
@@ -77,7 +80,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 50,
-    paddingTop:50
   },
   title: {
     fontSize: 28,

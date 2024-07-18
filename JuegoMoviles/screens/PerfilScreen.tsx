@@ -146,22 +146,22 @@ export default function PerfilScreen({ navigation, route }: any) {
             <IconComponentSmall title='Facebook' onPress={() => openURL('https://www.facebook.com/miguel.tulmo')}
               pathImage='https://cdn.icon-icons.com/icons2/2429/PNG/512/facebook_logo_icon_147291.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
-              <IconComponentSmall title='Instagram' 
+              <IconComponentSmall title='Instagram' onPress={() => openURL('https://www.instagram.com/')}
               pathImage='https://cdn.icon-icons.com/icons2/1211/PNG/512/1491580635-yumminkysocialmedia26_83102.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
-              <IconComponentSmall title='Twitter' 
+              <IconComponentSmall title='Twitter' onPress={() => openURL('https://www.facebook.com/miguel.tulmo')}
               pathImage='https://cdn.icon-icons.com/icons2/306/PNG/96/Twitter-Icon_34073.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
-              <IconComponentSmall title='TikTok' 
+              <IconComponentSmall title='TikTok' onPress={() => openURL('https://www.facebook.com/miguel.tulmo')}
               pathImage='https://cdn.icon-icons.com/icons2/2972/PNG/96/tiktok_logo_icon_186896.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
-              <IconComponentSmall title='Whatsapp' 
+              <IconComponentSmall title='Whatsapp' onPress={() => openURL('https://www.facebook.com/miguel.tulmo')}
               pathImage='https://cdn.icon-icons.com/icons2/2972/PNG/512/whatsapp_logo_icon_186881.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
-              <IconComponentSmall title='Telegram' 
+              <IconComponentSmall title='Telegram' onPress={() => openURL('https://www.facebook.com/miguel.tulmo')}
               pathImage='https://cdn.icon-icons.com/icons2/2699/PNG/96/telegram_logo_icon_168692.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
-              <IconComponentSmall title='Email' 
+              <IconComponentSmall title='Email' onPress={() => openURL('https://www.facebook.com/miguel.tulmo')}
               pathImage='https://cdn.icon-icons.com/icons2/1826/PNG/96/4202011emailgmaillogomailsocialsocialmedia-115677_115624.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
           </View>
