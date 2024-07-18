@@ -58,7 +58,8 @@ export default function ImagenPerfilScreen({ navigation }: any) {// Puedes decid
   async function subir() {
     setLoading(true);
     try {
-      const storageRef = ref(storage, `imagenPerfil/${auth.currentUser?.uid}/imagen`);
+      const filename = `${auth.currentUser?.uid}.jpg`;
+      const storageRef = ref(storage, `imagenPerfil/${filename}`);
       const response = await fetch(image);
       const blob = await response.blob();
       await uploadBytes(storageRef, blob);
@@ -68,7 +69,7 @@ export default function ImagenPerfilScreen({ navigation }: any) {// Puedes decid
       const userId = auth.currentUser?.uid;
       if (userId) {
         const userRef = dbRef(db, `usuarios/${userId}`);
-        await update(userRef, { imageURL });
+        await update(userRef, { image: imageURL });
         console.log('URL de la imagen guardada en la base de datos');
       }
 

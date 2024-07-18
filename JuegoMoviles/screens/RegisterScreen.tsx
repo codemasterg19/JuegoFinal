@@ -8,7 +8,7 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "fire
 // Importa la referencia a la base de datos Firebase
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { auth, db } from "../config/Config";
+import { auth, db, storage } from "../config/Config";
 import * as ImagePicker from 'expo-image-picker';
 
 export default function RegisterScreen({ navigation }: any) {
@@ -107,9 +107,8 @@ export default function RegisterScreen({ navigation }: any) {
   }
   
   async function subirImagen(userId:string) {
-    const storage = getStorage();
     const filename = `${userId}.jpg`;
-    const storageReference = storageRef(storage, `images/${filename}`);
+    const storageReference = storageRef(storage, `imagenPerfil/${filename}`);
     const response = await fetch(image);
     const blob = await response.blob();
 
