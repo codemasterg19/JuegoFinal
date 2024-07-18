@@ -27,7 +27,7 @@ function shuffle(array: string[]): string[] {
   return array;
 }
 
-const JuegoMemoria: React.FC = () => {
+const JuegoMemoria: React.FC = ({ navigation }: any) => {
   const [cards, setCards] = React.useState<string[]>([]);
   const [board, setBoard] = React.useState<string[]>([]);
   const [selectedCards, setSelectedCards] = React.useState<number[]>([]);
@@ -249,6 +249,9 @@ const JuegoMemoria: React.FC = () => {
                 <Text style={styles.modalText}>Puntaje: {score}</Text>
                 <TouchableOpacity style={styles.button} onPress={handleEndGame}>
                   <Text style={styles.buttonText}>Reintentar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Score')}>
+                  <Text style={styles.buttonText}>Salir</Text>
                 </TouchableOpacity>
               </>
             ) : isFinalWin ? (
