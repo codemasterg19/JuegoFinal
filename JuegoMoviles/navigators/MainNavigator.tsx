@@ -15,6 +15,7 @@ import PerfilScreen from '../screens/PerfilScreen';
 import { SECONDARY_COLOR } from '../commons/constantsColor';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImagenPerfilScreen from '../screens/ImagenPerfilScreen';
+import CambioContraseña from '../screens/CambioContraseña';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,6 +52,7 @@ function MyStack() {
             <Stack.Screen name="Registrarse" component={RegisterScreen} options={{headerShown:false}} />
             <Stack.Screen name="Recuperar" component={PasswordScreen} options={{headerShown:false}}/>
             <Stack.Screen name="ImagenPerfil" component={ImagenPerfilScreen} options={{headerShown:false}}/>
+            <Stack.Screen name="CambiarContraseña" component={CambioContraseña} options={{headerShown:false}}/>
             <Stack.Screen name="BottomTab" component={MyTabs} options={{headerShown:false}}/>
         </Stack.Navigator>
     );

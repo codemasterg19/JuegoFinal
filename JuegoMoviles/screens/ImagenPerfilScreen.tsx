@@ -93,6 +93,7 @@ export default function ImagenPerfilScreen({ navigation }: any) {// Puedes decid
         {image && <Image source={{ uri: image }} style={stylesI.containerP}/>}
         <Button title="Guardar" color={SECONDARY_COLOR} onPress={()=>subir()}/>
         {loading && <ActivityIndicator size="large" color={SECONDARY_COLOR} />}
+        <Button title="Regresar" color={SECONDARY_COLOR} onPress={() => navigation.navigate('Perfil')}/>
       </BodyComponent>
     </View>
   )

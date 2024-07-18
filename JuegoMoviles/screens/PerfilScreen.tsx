@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, Button, Image, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Alert, Button, Image, Linking, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { BUTTON_COLOR, SECONDARY_COLOR, TEXT_COLOR } from '../commons/constantsColor';
 import { IconComponent } from '../components/IconComponent';
@@ -16,8 +16,6 @@ export default function PerfilScreen({ navigation, route }: any) {
   const [apellido, setApellido] = useState("");
   const [correo, setCorreo] = useState("");
   const [usuario, setUsuario] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirma, setConfirma] = useState("");
   const [image, setImage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -75,6 +73,17 @@ export default function PerfilScreen({ navigation, route }: any) {
     }
   };
   
+  const openURL = (url:any) => {
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (supported) {
+          Linking.openURL(url);
+        } else {
+          console.log("Don't know how to open URI: " + url);
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -125,7 +134,7 @@ export default function PerfilScreen({ navigation, route }: any) {
           <ButtonComponent title="Guardar cambios" onPress={editarDatos} />
           <View style={stylesI.containerM}>
             <Text style={stylesI.text}>Datos</Text>
-            <IconComponentSmall title='Soporte' 
+            <IconComponentSmall title='Cambiar contraseña' onPress={() => navigation.navigate('CambiarContraseña')}
               pathImage='https://cdn.icon-icons.com/icons2/534/PNG/96/technical-support-2_icon-icons.com_52811.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
               <IconComponentSmall title='Legales' 
@@ -134,7 +143,7 @@ export default function PerfilScreen({ navigation, route }: any) {
           </View>
           <View style={stylesI.containerM}>
             <Text style={stylesI.text}>Contacto</Text>
-            <IconComponentSmall title='Facebook' 
+            <IconComponentSmall title='Facebook' onPress={() => openURL('https://www.facebook.com/miguel.tulmo')}
               pathImage='https://cdn.icon-icons.com/icons2/2429/PNG/512/facebook_logo_icon_147291.png' 
               pathImageS='https://cdn.icon-icons.com/icons2/1527/PNG/96/angleright_106681.png'/>
               <IconComponentSmall title='Instagram' 
@@ -187,8 +196,6 @@ const stylesI = StyleSheet.create({
   },
   containerD: {
     paddingTop:10,
-    // paddingLeft:10,
-    // borderRadius:25,
   },
   text:{
     color: TEXT_COLOR,
