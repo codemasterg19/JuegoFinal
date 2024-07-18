@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View,ImageBackground, Alert, Button } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ImageBackground, Alert, Button } from 'react-native';
 import { ButtonComponent } from '../components/ButtonComponent';
 
 //FIREBASE
@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function LoginScreen({ navigation }: any) {
- 
+
   const [correo, setCorreo] = useState('')
   const [contraseña, setContraseña] = useState('')
 
@@ -22,8 +22,12 @@ export default function LoginScreen({ navigation }: any) {
         const user = userCredential.user;
         console.log(user);
 
-              // Guardar el ID del usuario en AsyncStorage
-      AsyncStorage.setItem('userId', user.uid);
+        // Guardar el ID del usuario en AsyncStorage
+        AsyncStorage.setItem('userId', user.uid);
+
+        // Limpiar los campos de entrada
+        setCorreo('');
+        setContraseña('');
         //navigation.navigate("BottomTab")
         Alert.alert(
           "Ingreso exitoso",
@@ -35,47 +39,47 @@ export default function LoginScreen({ navigation }: any) {
         const errorCode = error.code;
         const errorMessage = error.message;
 
-        let titulo=""; 
-        let mensaje="";
+        let titulo = "";
+        let mensaje = "";
 
-        if (errorCode == 'auth/invalid-email'){
-          titulo="Correo inválido"
-          mensaje="Revisar que el email sea correcto"
-        }else if(errorCode == "auth/user-not-found") {
-          titulo="Error de usuario"
-          mensaje="El usuario no se encuentra registrado"
-        }else if(errorCode=="auth/wrong-password"){
-          titulo="Error de contraseña"
-          mensaje="Revisar si la contraseña está bien escrita"
-        }else{
-           titulo="Error"
-          mensaje="Revisar credenciales"
+        if (errorCode == 'auth/invalid-email') {
+          titulo = "Correo inválido"
+          mensaje = "Revisar que el email sea correcto"
+        } else if (errorCode == "auth/user-not-found") {
+          titulo = "Error de usuario"
+          mensaje = "El usuario no se encuentra registrado"
+        } else if (errorCode == "auth/wrong-password") {
+          titulo = "Error de contraseña"
+          mensaje = "Revisar si la contraseña está bien escrita"
+        } else {
+          titulo = "Error"
+          mensaje = "Revisar credenciales"
         }
 
         console.log(errorCode);
         console.log(errorMessage);
-        
+
         Alert.alert(titulo, mensaje)
       });
   }
 
   return (
-    
+
     <ImageBackground source={require('../assets/bg.png')} style={styles.container}>
 
-        <Image
+      <Image
         source={require('../assets/icono.png')}
         resizeMode={'contain'}
         style={styles.icon}
-        />
+      />
 
       <Text style={styles.titulo}>INGRESO GAMER</Text>
       <TextInput
         style={styles.containerimput}
         placeholder="Correo electronico"
-        autoCorrect={false} 
+        autoCorrect={false}
         onChangeText={(texto) => (setCorreo(texto))}
-        
+
       />
       <TextInput
         style={styles.containerimput}
@@ -84,10 +88,10 @@ export default function LoginScreen({ navigation }: any) {
         secureTextEntry
       />
       <View style={styles.containerB}>
-        <ButtonComponent title='Entrar' onPress={() => login()}/>
-        <ButtonComponent title='REGISTRARSE' onPress={()=>navigation.navigate('Registrarse')}/>
+        <ButtonComponent title='Entrar' onPress={() => login()} />
+        <ButtonComponent title='REGISTRARSE' onPress={() => navigation.navigate('Registrarse')} />
       </View>
-      <TouchableOpacity style={styles.Botones2} onPress={()=> navigation.navigate("Recuperar")}>
+      <TouchableOpacity style={styles.Botones2} onPress={() => navigation.navigate("Recuperar")}>
         <Text style={styles.Botonestexto2}>Recuperar contraseña</Text>
       </TouchableOpacity>
     </ImageBackground>
@@ -101,10 +105,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  containerB:{
-    flexDirection:'row',
-    marginTop:20,
-    gap:20,
+  containerB: {
+    flexDirection: 'row',
+    marginTop: 20,
+    gap: 20,
   },
   icon: { marginTop: -100, height: 150 },
   titulo: {
@@ -114,7 +118,7 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   containerimput: {
-    
+
     height: 50,
     fontSize: 17,
     marginBottom: 15,
@@ -125,8 +129,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,.95)',
     borderRadius: 40,
   },
-  button:{
-    backgroundColor:''
+  button: {
+    backgroundColor: ''
   },
   Botones: {
     backgroundColor: '#3e69e0',

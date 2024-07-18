@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, Image } from 'react-native';
 import { ref, onValue } from 'firebase/database';
 import { db } from '../config/Config'; // Asegúrate de importar correctamente la configuración de Firebase
 
@@ -22,6 +22,7 @@ export default function ScoreScreen() {
           const scoresArray : any= Object.keys(scoresData).map((key) => {
             // Encuentra el nombre de usuario correspondiente al ID
             const userName = usersData[scoresData[key].user]?.nombre || 'Desconocido';
+            const userImg= usersData[scoresData[key].user]?.imageURL|| null;
             return {
               id: key,
               user: userName, // Usar el nombre en lugar del ID
@@ -29,10 +30,12 @@ export default function ScoreScreen() {
               time: scoresData[key].time,
               nivel: scoresData[key].nivel,
               intentos: scoresData[key].intentos,
+              imagen: userImg,
+              
             };
           });
           // Ordenar puntajes de mayor a menor
-          scoresArray.sort((a: any, b: any) => b.time - a.time);
+          scoresArray.sort((a: any, b: any) => a.time - b.time);
           setScores(scoresArray);
         });
       }
@@ -44,10 +47,15 @@ export default function ScoreScreen() {
     };
   }, []);
 
-  const renderScoreItem = ({ item, index }: { item: any; index: number }) => (
+  const renderScoreItem = ({ item, index }: any) => (
     <View style={[styles.scoreItem, index % 2 === 1 ? styles.darkRow : styles.lightRow]}>
       <Text style={styles.rank}>{index + 1}</Text>
-      <Text style={styles.userName}>{item.user}</Text>
+      <View style={styles.userContainer}>
+        <Text style={styles.userName}>{item.user}</Text>
+        {item.imagen && (
+          <Image source={{ uri: item.imagen }} style={styles.userImage} />
+        )}
+      </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.score}>Puntaje: {item.score}</Text>
         <Text style={styles.time}>Tiempo: {item.time}</Text>
@@ -63,7 +71,7 @@ export default function ScoreScreen() {
       <FlatList
         data={scores}
         renderItem={renderScoreItem}
-        keyExtractor={(item) => item.id.toString()}
+  
         contentContainerStyle={styles.list}
       />
     </View>
@@ -77,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 50,
-    paddingTop:50
+    paddingTop: 50
   },
   title: {
     fontSize: 28,
@@ -114,11 +122,21 @@ const styles = StyleSheet.create({
     width: 40,
     textAlign: 'center',
   },
+  userContainer: {
+    alignItems: 'center',
+  },
   userName: {
     flex: 1,
     fontSize: 18,
     color: '#fff',
     marginLeft: 10,
+    textAlign: 'center',
+  },
+  userImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginTop: 4,
   },
   detailsContainer: {
     flex: 1,
