@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: TEXT_COLOR,
-    width:240,
+    width:260,
     fontSize: 27,
     fontWeight: 'bold',
   },

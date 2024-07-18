@@ -88,7 +88,7 @@ export default function LoginScreen({ navigation }: any) {
         secureTextEntry
       />
       <View style={styles.containerB}>
-        <ButtonComponent title='Entrar' onPress={() => login()} />
+        <ButtonComponent title='ENTRAR' onPress={() => login()} />
         <ButtonComponent title='REGISTRARSE' onPress={() => navigation.navigate('Registrarse')} />
       </View>
       <TouchableOpacity style={styles.Botones2} onPress={() => navigation.navigate("Recuperar")}>

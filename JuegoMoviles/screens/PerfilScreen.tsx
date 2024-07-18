@@ -88,7 +88,7 @@ export default function PerfilScreen({ navigation, route }: any) {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Hola, administra tu cuenta</Text>
+          <Text style={styles.title}>Bienvenido {nombre}, administra tu cuenta</Text>
           <IconComponent onPress={cierreSesion}
           pathImage='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdsU9PD6epuU1Eolx_ElhxRlZwjYKUiJNDzw&usqp=CAU'/>
         </View>

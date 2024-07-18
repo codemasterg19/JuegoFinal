@@ -155,10 +155,12 @@ export default function RegisterScreen({ navigation }: any) {
       <View style={styles.formContainer}>
         <Text style={styles.title}>REGISTRARSE</Text>
         <Text style={styles.title}>Cargar imagen de perfil</Text>
-        <Button title="Cargar desde la galería" color={SECONDARY_COLOR} onPress={pickImageGallery} />
-        <Button title="Tomar una foto" color={SECONDARY_COLOR} onPress={pickImagePhoto} />
-        {image && <Image source={{ uri: image }} style={styles.containerP}/>}
-        {loading && <ActivityIndicator size="large" color={SECONDARY_COLOR} />}
+        <View style={styles.perfilContainer}>
+          <ButtonComponent title="Cargar desde la galería" onPress={pickImageGallery} />
+          <ButtonComponent title="Tomar una foto" onPress={pickImagePhoto} />
+          {image && <Image source={{ uri: image }} style={styles.containerP}/>}
+          {loading && <ActivityIndicator size="large" color={SECONDARY_COLOR} />}
+        </View>
         <TextInput
           style={styles.input}
           onChangeText={setNombre}
@@ -253,6 +255,11 @@ const styles = StyleSheet.create({
   formContainer: {
     width: "80%",
     alignItems: "center",
+  },
+  perfilContainer: {
+    alignItems: "center",
+    gap:20,
+    paddingBottom:10,
   },
   containerP: {
     width:150,
