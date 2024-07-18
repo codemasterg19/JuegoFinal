@@ -77,6 +77,7 @@ export default function LoginScreen({ navigation }: any) {
       <TextInput
         style={styles.containerimput}
         placeholder="Correo electronico"
+        value={correo}
         autoCorrect={false}
         onChangeText={(texto) => (setCorreo(texto))}
 
@@ -84,6 +85,7 @@ export default function LoginScreen({ navigation }: any) {
       <TextInput
         style={styles.containerimput}
         placeholder="Contraseña"
+        value={contraseña}
         onChangeText={(texto) => (setContraseña(texto))}
         secureTextEntry
       />
