@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
-import { ref, onValue, off } from 'firebase/database';
+import { ref, onValue } from 'firebase/database';
 import { db } from '../config/Config'; // Asegúrate de importar correctamente la configuración de Firebase
 
 const windowWidth = Dimensions.get('window').width;
@@ -10,10 +10,6 @@ export default function ScoreScreen() {
 
   useEffect(() => {
     const scoresRef = ref(db, 'scores');
-    const usersRef = ref(db, 'usuarios'); // Referencia a la base de datos de usuarios
-  
-    // Función para actualizar los puntajes
-    const updateScores = (snapshot) => {
     const usersRef  = ref(db, 'usuarios');
 
     // Escuchar cambios en los datos de Firebase Realtime Database
