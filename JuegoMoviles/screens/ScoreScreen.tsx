@@ -14,12 +14,16 @@ export default function ScoreScreen() {
   
     // Función para actualizar los puntajes
     const updateScores = (snapshot) => {
+    const usersRef  = ref(db, 'usuarios');
+
+    // Escuchar cambios en los datos de Firebase Realtime Database
+    onValue(scoresRef, (snapshot) => {
       const scoresData = snapshot.val();
       if (scoresData) {
         // Obtener los nombres de usuario de la base de datos de usuarios
         onValue(usersRef, (usersSnapshot) => {
           const usersData = usersSnapshot.val();
-          const scoresArray = Object.keys(scoresData).map((key) => {
+          const scoresArray : any= Object.keys(scoresData).map((key) => {
             // Encuentra el nombre de usuario correspondiente al ID
             const userName = usersData[scoresData[key].user]?.nombre || 'Desconocido';
             return {
@@ -32,22 +36,19 @@ export default function ScoreScreen() {
             };
           });
           // Ordenar puntajes de mayor a menor
-          scoresArray.sort((a, b) => b.score - a.score);
+          scoresArray.sort((a: any, b: any) => b.time - a.time);
           setScores(scoresArray);
         });
       }
-    };
-
-    // Escuchar cambios en los datos de Firebase Realtime Database
-    onValue(scoresRef, updateScores);
-
+    });
+  
     // Devuelve una función de limpieza para limpiar el listener en unmount
     return () => {
-      off(scoresRef, updateScores); // Detener la escucha de cambios
+      // Detener la escucha de cambios
     };
   }, []);
 
-  const renderScoreItem = ({ item, index }) => (
+  const renderScoreItem = ({ item, index }: { item: any; index: number }) => (
     <View style={[styles.scoreItem, index % 2 === 1 ? styles.darkRow : styles.lightRow]}>
       <Text style={styles.rank}>{index + 1}</Text>
       <Text style={styles.userName}>{item.user}</Text>
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 50,
+    paddingTop:50
   },
   title: {
     fontSize: 28,
