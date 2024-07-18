@@ -263,7 +263,7 @@ const JuegoMemoria: React.FC = ({ navigation }: any) => {
                 <TouchableOpacity style={styles.button} onPress={handleTryAgain}>
                   <Text style={styles.buttonText}>Reintentar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Score')}>
+                <TouchableOpacity style={styles.button} onPress={handleEndGame}>
                   <Text style={styles.buttonText}>Salir</Text>
                 </TouchableOpacity>
               </>
