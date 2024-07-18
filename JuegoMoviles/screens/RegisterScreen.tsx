@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity, Button, Image, ActivityIndicator } from "react-native";
 import { ButtonComponent } from "../components/ButtonComponent";
-import { PRIMARY_COLOR, TEXT_COLOR } from "../commons/constantsColor";
+import { PRIMARY_COLOR, SECONDARY_COLOR, TEXT_COLOR } from "../commons/constantsColor";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { set, ref } from "firebase/database"; // Asegúrate de importar estas funciones de Firebase
- // Importa la referencia a la base de datos Firebase
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage"; 
+// Importa la referencia a la base de datos Firebase
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { auth, db } from "../config/Config";
-
+import * as ImagePicker from 'expo-image-picker';
 
 export default function RegisterScreen({ navigation }: any) {
   const [nombre, setNombre] = useState("");
@@ -19,6 +20,8 @@ export default function RegisterScreen({ navigation }: any) {
   const [confirma, setConfirma] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [image, setImage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function getErrorMessage(errorCode: any) {
     switch (errorCode) {
@@ -49,46 +52,51 @@ export default function RegisterScreen({ navigation }: any) {
     registrarUsuario();
   }
 
-  function registrarUsuario() {
-    createUserWithEmailAndPassword(auth, correo, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log('Usuario registrado:', user.uid);
+  async function registrarUsuario() {
+    setLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, correo, password);
+      const user = userCredential.user;
+      console.log('Usuario registrado:', user.uid);
 
-        // Guardar los datos en la base de datos
-        guardarRegistro(user.uid);
+      if (image) {
+        await subirImagen(user.uid);
+      } else {
+        guardarRegistro(user.uid, '');
+      }
 
-        // Navegar a la pantalla de login después del registro exitoso
-        Alert.alert(
-          "Registro Exitoso",
-          "El usuario se ha registrado correctamente.",
-          [{ text: "OK", onPress: () => navigation.navigate("Login") }]
-        );
+      Alert.alert(
+        "Registro Exitoso",
+        "El usuario se ha registrado correctamente.",
+        [{ text: "OK", onPress: () => navigation.navigate("Login") }]
+      );
 
-        // Reiniciar los estados de los campos de texto
-        setNombre('');
-        setApellido('');
-        setCorreo('');
-        setPassword('');
-        setConfirma('');
-        setUsuario('');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = getErrorMessage(errorCode);
-        console.log(`Error Code: ${errorCode}, Message: ${error.message}`);
-        Alert.alert("Error de Registro", errorMessage);
-      });
+      // Reiniciar los estados de los campos de texto
+      setNombre('');
+      setApellido('');
+      setCorreo('');
+      setPassword('');
+      setConfirma('');
+      setUsuario('');
+      setImage('');
+    } catch (error:any) {
+      const errorCode = error.code;
+      const errorMessage = getErrorMessage(errorCode);
+      console.log(`Error Code: ${errorCode}, Message: ${error.message}`);
+      Alert.alert("Error de Registro", errorMessage);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function guardarRegistro(userId: string) {
+  function guardarRegistro(userId: string, image: string) {
     // Utilizamos userId como parte de los datos a guardar en la base de datos
     set(ref(db, `usuarios/${userId}`), {
       nombre: nombre,
       apellido: apellido,
       usuario: usuario,
       correo: correo,
-      password:password
+      image: image,
     })
       .then(() => {
         console.log('Datos guardados en la base de datos para el usuario:', userId);
@@ -97,12 +105,60 @@ export default function RegisterScreen({ navigation }: any) {
         console.error('Error al guardar en la base de datos:', error);
       });
   }
+  
+  async function subirImagen(userId:string) {
+    const storage = getStorage();
+    const filename = `${userId}.jpg`;
+    const storageReference = storageRef(storage, `images/${filename}`);
+    const response = await fetch(image);
+    const blob = await response.blob();
+
+    uploadBytes(storageReference, blob).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((downloadURL) => {
+        guardarRegistro(userId, downloadURL);
+      });
+    }).catch((error) => {
+      console.error('Error al subir la imagen:', error);
+    });
+  }
+
+  const pickImageGallery = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true, //traer la imagen directamente
+      aspect: [1, 1], //seleccionar cualquier dimension
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const pickImagePhoto = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.title}>REGISTRARSE</Text>
-
+        <Text style={styles.title}>Cargar imagen de perfil</Text>
+        <Button title="Cargar desde la galería" color={SECONDARY_COLOR} onPress={pickImageGallery} />
+        <Button title="Tomar una foto" color={SECONDARY_COLOR} onPress={pickImagePhoto} />
+        {image && <Image source={{ uri: image }} style={styles.containerP}/>}
+        {loading && <ActivityIndicator size="large" color={SECONDARY_COLOR} />}
         <TextInput
           style={styles.input}
           onChangeText={setNombre}
@@ -197,6 +253,12 @@ const styles = StyleSheet.create({
   formContainer: {
     width: "80%",
     alignItems: "center",
+  },
+  containerP: {
+    width:150,
+    height:150,
+    alignSelf:'center',
+    resizeMode: 'cover',
   },
   title: {
     color: TEXT_COLOR,

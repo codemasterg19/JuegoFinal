@@ -87,7 +87,7 @@ export default function ImagenPerfilScreen({ navigation }: any) {// Puedes decid
   return (
     <View style={stylesI.containerT}>
       <BodyComponent>
-      <Text style={stylesI.title}>Cargar imagen de perfil</Text>
+        <Text style={stylesI.title}>Cargar imagen de perfil</Text>
         <Button title="Cargar desde la galería" color={SECONDARY_COLOR} onPress={pickImageGallery} />
         <Button title="Tomar una foto" color={SECONDARY_COLOR} onPress={pickImagePhoto} />
         {image && <Image source={{ uri: image }} style={stylesI.containerP}/>}
