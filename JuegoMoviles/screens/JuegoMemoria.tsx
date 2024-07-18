@@ -172,9 +172,22 @@ const JuegoMemoria: React.FC = ({ navigation }: any) => {
     guardarScore(score, elapsedTime, level, remainingAttempts);
   };
 
+  const handleReset = () => {
+    startNewGame(1); // Reiniciar el juego al nivel 1
+    setLevel(1);
+  };
+
+  const handleTryAgain = () => {
+    startNewGame(1); // Reiniciar el juego al nivel 1
+    setLevel(1);
+    guardarScore(score, elapsedTime, level, remainingAttempts);
+  };
+
   const handleEndGame = () => {
     startNewGame(1); // Reiniciar el juego al nivel 1
     setLevel(1);
+    guardarScore(score, elapsedTime, level, remainingAttempts);
+    navigation.navigate('Score')
   };
 
   const calculateCardSize = () => {
@@ -232,7 +245,7 @@ const JuegoMemoria: React.FC = ({ navigation }: any) => {
           );
         })}
       </ScrollView>
-      <TouchableOpacity style={styles.restartButton} onPress={handleEndGame}>
+      <TouchableOpacity style={styles.restartButton} onPress={handleReset}>
         <Text style={styles.buttonText}>Reiniciar Juego</Text>
       </TouchableOpacity>
       <Modal
@@ -247,7 +260,7 @@ const JuegoMemoria: React.FC = ({ navigation }: any) => {
               <>
                 <Text style={styles.modalText}>¡Perdiste! 😔</Text>
                 <Text style={styles.modalText}>Puntaje: {score}</Text>
-                <TouchableOpacity style={styles.button} onPress={handleEndGame}>
+                <TouchableOpacity style={styles.button} onPress={handleTryAgain}>
                   <Text style={styles.buttonText}>Reintentar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Score')}>
