@@ -9,7 +9,7 @@ import {
 import { INPUT_COLOR, PRIMARY_COLOR, SECONDARY_COLOR, TEXT_COLOR } from '../commons/constantsColor';
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { Alert } from 'react-native';
-import LoginScreen from './LoginScreen';
+
 
 
 export const PasswordScreen = ({ navigation }: any) => {
